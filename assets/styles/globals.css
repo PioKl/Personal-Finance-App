@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* Colors */
+  --beige500: #98908b;
+  --beige100: #f8f4f0;
+
+  --grey900: #201f24;
+  --grey500: #696868;
+  --grey300: #b3b3b3;
+  --greay100: #f2f2f2;
+
+  /* Secondary Colors */
+
+  --green: #277c78;
+  --yellow: #f2cdac;
+  --cyan: #82c9d7;
+  --navy: #626070;
+  --red: #c94736;
+  --purple: #826cb0;
+
+  --purpleAlt: #af81ba;
+  --turquoise: #597c7c;
+  --brown: #93674f;
+  --magenta: #934f6f;
+  --blue: #3f82b2;
+  --navyGrey: #97a0ac;
+  --armyGreen: #7f9161;
+  --gold: #cab361;
+  --orange: #be6c49;
+  --white: #ffffff;
+
+  /* Typography */
+  --text-preset-1-font-size: 32px;
+  --text-preset-1-font-weight: 700;
+  --text-preset-1-letter-spacing: 0;
+  --text-preset-1-line-height: 120%;
+
+  --text-preset-2-font-size: 20px;
+  --text-preset-2-font-weight: 700;
+  --text-preset-2-letter-spacing: 0;
+  --text-preset-2-line-height: 120%;
+
+  --text-preset-3-font-size: 16px;
+  --text-preset-3-font-weight: 700;
+  --text-preset-3-letter-spacing: 0;
+  --text-preset-3-line-height: 150%;
+
+  --text-preset-4-font-size: 14px;
+  --text-preset-4-font-weight: 400;
+  --text-preset-4-letter-spacing: 0;
+  --text-preset-4-line-height: 150%;
+  --text-preset-4-bold-font-weight: 700;
+
+  --text-preset-5-font-size: 12px;
+  --text-preset-5-font-weight: 400;
+  --text-preset-5-letter-spacing: 0;
+  --text-preset-5-line-height: 150%;
+  --text-preset-5-bold-font-weight: 700;
+}
+
+@theme {
+  /* Typography */
+  --text-heading-xl: var(--text-preset-1-font-size);
+  --font-weight-heading-xl: var(--text-preset-1-font-weight);
+  --tracking-heading-xl: var(--text-preset-1-letter-spacing);
+  --leading-heading-xl: var(--text-preset-1-line-height);
+
+  --text-heading-l: var(--text-preset-2-font-size);
+  --font-weight-heading-l: var(--text-preset-2-font-weight);
+  --tracking-heading-l: var(--text-preset-2-letter-spacing);
+  --leading-heading-l: var(--text-preset-2-line-height);
+
+  --text-heading-m: var(--text-preset-3-font-size);
+  --font-weight-heading-m: var(--text-preset-3-font-weight);
+  --tracking-heading-m: var(--text-preset-3-letter-spacing);
+  --leading-heading-m: var(--text-preset-3-line-height);
+
+  --text-heading-s: var(--text-preset-4-font-size);
+  --font-weight-heading-s: var(--text-preset-4-font-weight);
+  --font-weight-heading-s-bold: var(--text-preset-4-bold-font-weight);
+  --tracking-heading-s: var(--text-preset-4-letter-spacing);
+  --leading-heading-s: var(--text-preset-4-line-height);
+
+  --text-heading-xs: var(--text-preset-5-font-size);
+  --font-weight-heading-xs: var(--text-preset-5-font-weight);
+  --font-weight-heading-xs-bold: var(--text-preset-5-bold-font-weight);
+  --tracking-heading-xs: var(--text-preset-5-letter-spacing);
+  --leading-heading-xs: var(--text-preset-5-line-height);
+
+  /* Spacing */
+  --spacing-500: 40px;
+  --spacing-400: 32px;
+  --spacing-300: 24px;
+  --spacing-250: 20px;
+  --spacing-200: 16px;
+  --spacing-150: 12px;
+  --spacing-100: 8px;
+  --spacing-50: 4px;
+
+  /* Border */
+  --radius-menu: 16px;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-public-sans);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
