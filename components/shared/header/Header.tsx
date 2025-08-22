@@ -1,0 +1,99 @@
+"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import Logo from "@/assets/icons/logo-large.svg";
+import IconOverview from "@/assets/icons/icon-nav-overview.svg";
+import IconTransaction from "@/assets/icons/icon-nav-transactions.svg";
+import IconBudgets from "@/assets/icons/icon-nav-budgets.svg";
+import IconPots from "@/assets/icons/icon-nav-pots.svg";
+import IconRecurringBills from "@/assets/icons/icon-nav-recurring-bills.svg";
+import IconMinimizeMenu from "@/assets/icons/icon-minimize-menu.svg";
+
+const Header = () => {
+  const links = [
+    { id: 0, name: "overview", icon: IconOverview, href: "/" },
+    {
+      id: 1,
+      name: "transactions",
+      icon: IconTransaction,
+      href: "/transactions",
+    },
+    {
+      id: 2,
+      name: "budgets",
+      icon: IconBudgets,
+      href: "/budgets",
+    },
+    {
+      id: 3,
+      name: "pots",
+      icon: IconPots,
+      href: "/pots",
+    },
+    {
+      id: 4,
+      name: "recurring bills",
+      icon: IconRecurringBills,
+      href: "/recurring-bills",
+    },
+  ];
+
+  const path = usePathname();
+
+  const activeStyles =
+    "bg-menu-link-active-bg text-menu-link-active-color border-menu-link-active-border-color";
+  const interactiveStyles =
+    "group-hover:bg-menu-link-active-bg group-hover:text-menu-link-active-color group-hover:border-menu-link-active-border-color group-focus-within:bg-menu-link-active-bg group-focus-within:text-menu-link-active-color group-focus-within:border-menu-link-active-border-color";
+
+  const handleMinimizeMenu = () => {};
+
+  return (
+    <header className="flex flex-col bg-header h-auto sticky bottom-0 pt-space-100 px-space-200 rounded-t-menu-mobile md:px-space-500 lg:h-screen lg:min-w-75 lg:relative lg:py-space-300 lg:pl-0 lg:pr-space-300 lg:rounded-t-none lg:rounded-r-menu">
+      <Logo className="hidden lg:block lg:ml-space-400 lg:mb-16" />
+      <nav>
+        <ul className="flex md:gap-10.5 lg:flex-col lg:gap-space-50">
+          {links.map((link) => {
+            const activeLink = path === link.href;
+            return (
+              <li key={link.id} className="group flex flex-1">
+                <Link
+                  href={link.href}
+                  className={`flex flex-col flex-1 items-center w-fit pt-space-100 pb-space-150 px-5.5 font-heading-xs-bold border-b-4 rounded-t-menu-mobile ${
+                    activeLink
+                      ? activeStyles
+                      : "bg-transparent text-menu-link-color border-transparent"
+                  } ${interactiveStyles} md:px-2.5 lg:flex-row lg:w-full lg:py-space-200 lg:px-space-400 lg:border-b-0 lg:border-l-4 lg:rounded-t-none lg:rounded-r-menu`}
+                >
+                  <div className="flex items-center justify-center w-6 h-6 mb-space-50 lg:mr-space-200">
+                    <link.icon
+                      className={`${
+                        activeLink
+                          ? "[&>path]:fill-menu-link-active-icon-color"
+                          : "[&>path]:fill-menu-link-icon-color"
+                      } group-hover:[&>path]:fill-menu-link-active-icon-color group-focus-within:[&>path]:fill-menu-link-active-icon-color`}
+                    />
+                  </div>
+
+                  <span className="sr-only capitalize text-heading-xs tracking-heading-xs leading-heading-xs md:not-sr-only lg:text-heading-m lg:tracking-heading-m lg:leading-heading-m">
+                    {link.name}
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+      <button
+        className="group items-end text-left text-heading-m tracking-heading-m leading-heading-m font-heading-m text-button hidden lg:flex lg:mt-auto lg:ml-space-400 lg:mb-14.5"
+        onClick={handleMinimizeMenu}
+      >
+        <IconMinimizeMenu className="mr-space-200 group-hover:[&>path]:fill-button-active group-focus:[&>path]:fill-button-active" />
+        <span className="group-hover:text-button-active group-focus:text-button-active">
+          Minimize Menu
+        </span>
+      </button>
+    </header>
+  );
+};
+
+export default Header;
