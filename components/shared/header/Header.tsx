@@ -1,13 +1,16 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import Logo from "@/assets/icons/logo-large.svg";
+import LogoSmall from "@/assets/icons/logo-small.svg";
 import IconOverview from "@/assets/icons/icon-nav-overview.svg";
 import IconTransaction from "@/assets/icons/icon-nav-transactions.svg";
 import IconBudgets from "@/assets/icons/icon-nav-budgets.svg";
 import IconPots from "@/assets/icons/icon-nav-pots.svg";
 import IconRecurringBills from "@/assets/icons/icon-nav-recurring-bills.svg";
 import IconMinimizeMenu from "@/assets/icons/icon-minimize-menu.svg";
+import Button from "@/components/ui/Button";
 
 const Header = () => {
   const links = [
@@ -45,11 +48,26 @@ const Header = () => {
   const interactiveStyles =
     "group-hover:bg-menu-link-active-bg group-hover:text-menu-link-active-color group-hover:border-menu-link-active-border-color group-focus-within:bg-menu-link-active-bg group-focus-within:text-menu-link-active-color group-focus-within:border-menu-link-active-border-color";
 
-  const handleMinimizeMenu = () => {};
+  const [minMenu, setMinMenu] = useState(false);
+
+  const handleMinimizeMenu = () => {
+    setMinMenu(!minMenu);
+  };
 
   return (
-    <header className="flex flex-col bg-header h-auto sticky bottom-0 pt-space-100 px-space-200 rounded-t-menu-mobile md:px-space-500 lg:h-screen lg:min-w-75 lg:relative lg:py-space-300 lg:pl-0 lg:pr-space-300 lg:rounded-t-none lg:rounded-r-menu">
-      <Logo className="hidden lg:block lg:ml-space-400 lg:mb-16" />
+    <header
+      className={`flex flex-col bg-header h-auto sticky bottom-0 pt-space-100 px-space-200 rounded-t-menu-mobile md:px-space-500 lg:h-screen ${
+        minMenu ? "lg:min-w-22 lg:max-w-22" : "lg:min-w-75"
+      } lg:top-0 lg:py-space-300 lg:pl-0 lg:pr-space-300 lg:rounded-t-none lg:rounded-r-menu`}
+    >
+      {minMenu ? (
+        <div className="flex justify-end pr-space-150">
+          <LogoSmall className="hidden lg:block lg:mb-16" />
+        </div>
+      ) : (
+        <Logo className="hidden lg:block lg:ml-space-400 lg:mb-16" />
+      )}
+
       <nav>
         <ul className="flex md:gap-10.5 lg:flex-col lg:gap-space-50">
           {links.map((link) => {
@@ -73,25 +91,25 @@ const Header = () => {
                       } group-hover:[&>path]:fill-menu-link-active-icon-color group-focus-within:[&>path]:fill-menu-link-active-icon-color`}
                     />
                   </div>
-
-                  <span className="sr-only capitalize text-heading-xs tracking-heading-xs leading-heading-xs md:not-sr-only lg:text-heading-m lg:tracking-heading-m lg:leading-heading-m">
-                    {link.name}
-                  </span>
+                  {!minMenu && (
+                    <span className="sr-only capitalize text-heading-xs tracking-heading-xs leading-heading-xs md:not-sr-only lg:text-heading-m lg:tracking-heading-m lg:leading-heading-m">
+                      {link.name}
+                    </span>
+                  )}
                 </Link>
               </li>
             );
           })}
         </ul>
       </nav>
-      <button
-        className="group items-end text-left text-heading-m tracking-heading-m leading-heading-m font-heading-m text-button hidden lg:flex lg:mt-auto lg:ml-space-400 lg:mb-14.5"
+      <Button
+        variant="sidebar"
+        state={minMenu}
+        icon={IconMinimizeMenu}
         onClick={handleMinimizeMenu}
       >
-        <IconMinimizeMenu className="mr-space-200 group-hover:[&>path]:fill-button-active group-focus:[&>path]:fill-button-active" />
-        <span className="group-hover:text-button-active group-focus:text-button-active">
-          Minimize Menu
-        </span>
-      </button>
+        Minimize Menu
+      </Button>
     </header>
   );
 };
