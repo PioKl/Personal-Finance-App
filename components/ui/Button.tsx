@@ -23,7 +23,7 @@ const Button = <T,>({
     destroy: "",
     //Sidebar
     sidebar:
-      "group items-end text-left text-heading-m tracking-heading-m leading-heading-m font-heading-m text-button hidden lg:flex lg:mt-auto lg:ml-space-400 lg:mb-14.5",
+      "group w-fit items-end text-left text-heading-m tracking-heading-m leading-heading-m font-heading-m text-button hidden lg:flex lg:mt-auto lg:ml-space-400 lg:mb-14.5",
     //Link
     link: "",
   };
@@ -41,16 +41,20 @@ const Button = <T,>({
         <>
           {Icon && (
             <Icon
-              className={`${
+              className={`flex-shrink-0 ${
                 state ? "mr-0 ml-space-50 rotate-180" : "mr-space-200 rotate-0"
               } group-hover:[&>path]:fill-button-active group-focus-visible:[&>path]:fill-button-active`}
             />
           )}
-          {!state && (
-            <span className="group-hover:text-button-active group-focus-visible:text-button-active">
-              {children}
-            </span>
-          )}
+          <span
+            className={`transition-opacity duration-200 delay-400 ${
+              state
+                ? "opacity-0 invisible text-[0px]"
+                : "opacity-100 visible text-heading-m"
+            } whitespace-nowrap group-hover:text-button-active group-focus-visible:text-button-active`}
+          >
+            {children}
+          </span>
         </>
       ) : (
         children
