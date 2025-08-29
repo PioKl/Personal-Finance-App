@@ -84,6 +84,15 @@
   }
 }
 
+@layer utilities {
+  .custom-transition-opacity {
+    @apply transition-opacity duration-200 delay-400;
+  }
+  .custom-transition-width {
+    @apply transition-[width] duration-400;
+  }
+}
+
 @theme {
   /* Font */
   --font-sans: var(--font-public-sans);
