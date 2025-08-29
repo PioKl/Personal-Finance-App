@@ -21,18 +21,8 @@ const Header = () => {
       icon: IconTransaction,
       href: "/transactions",
     },
-    {
-      id: 2,
-      name: "budgets",
-      icon: IconBudgets,
-      href: "/budgets",
-    },
-    {
-      id: 3,
-      name: "pots",
-      icon: IconPots,
-      href: "/pots",
-    },
+    { id: 2, name: "budgets", icon: IconBudgets, href: "/budgets" },
+    { id: 3, name: "pots", icon: IconPots, href: "/pots" },
     {
       id: 4,
       name: "recurring bills",
@@ -42,23 +32,18 @@ const Header = () => {
   ];
 
   const path = usePathname();
+  const [minMenu, setMinMenu] = useState(false);
 
   const activeStyles =
     "bg-menu-link-active-bg text-menu-link-active-color border-menu-link-active-border-color";
   const interactiveStyles =
     "group-hover:bg-menu-link-active-bg group-hover:text-menu-link-active-color group-hover:border-menu-link-active-border-color group-focus-within:bg-menu-link-active-bg group-focus-within:text-menu-link-active-color group-focus-within:border-menu-link-active-border-color";
 
-  const [minMenu, setMinMenu] = useState(false);
-
-  const handleMinimizeMenu = () => {
-    setMinMenu(!minMenu);
-  };
-
   return (
     <header
-      className={`flex flex-col bg-header h-auto sticky bottom-0 pt-space-100 px-space-200 rounded-t-menu-mobile md:px-space-500 lg:h-screen ${
-        minMenu ? "lg:min-w-22 lg:max-w-22" : "lg:min-w-75"
-      } lg:top-0 lg:py-space-300 lg:pl-0 lg:pr-space-300 lg:rounded-t-none lg:rounded-r-menu`}
+      className={`flex flex-col bg-header h-auto sticky bottom-0 pt-space-100 px-space-200 rounded-t-menu-mobile md:px-space-500 lg:h-screen lg:top-0 lg:py-space-300 lg:pl-0 lg:pr-space-300 lg:rounded-t-none lg:rounded-r-menu custom-transition-width ${
+        minMenu ? "lg:w-22" : "lg:w-75"
+      }`}
     >
       {minMenu ? (
         <div className="flex justify-end pr-space-150">
@@ -76,13 +61,15 @@ const Header = () => {
               <li key={link.id} className="group flex flex-1">
                 <Link
                   href={link.href}
-                  className={`flex flex-col flex-1 items-center w-fit pt-space-100 pb-space-150 px-5.5 font-heading-xs-bold border-b-4 rounded-t-menu-mobile ${
+                  className={`flex flex-col flex-1 items-center pt-space-100 pb-space-150 px-5.5 font-heading-xs-bold border-b-4 rounded-t-menu-mobile ${
                     activeLink
                       ? activeStyles
                       : "bg-transparent text-menu-link-color border-transparent"
-                  } ${interactiveStyles} md:px-2.5 lg:flex-row lg:w-full lg:py-space-200 lg:px-space-400 lg:border-b-0 lg:border-l-4 lg:rounded-t-none lg:rounded-r-menu`}
+                  } ${interactiveStyles} md:px-2.5 lg:flex-row lg:py-space-200 lg:px-space-400 lg:border-b-0 lg:border-l-4 lg:rounded-t-none lg:rounded-r-menu custom-transition-width ${
+                    minMenu ? "lg:w-[64px]" : "lg:w-[276px]"
+                  }`}
                 >
-                  <div className="flex items-center justify-center w-6 h-6 mb-space-50 lg:mr-space-200">
+                  <div className="flex flex-shrink-0 items-center justify-center w-6 h-6 mb-space-50 lg:mr-space-200">
                     <link.icon
                       className={`${
                         activeLink
@@ -91,22 +78,27 @@ const Header = () => {
                       } group-hover:[&>path]:fill-menu-link-active-icon-color group-focus-within:[&>path]:fill-menu-link-active-icon-color`}
                     />
                   </div>
-                  {!minMenu && (
-                    <span className="sr-only capitalize text-heading-xs tracking-heading-xs leading-heading-xs md:not-sr-only lg:text-heading-m lg:tracking-heading-m lg:leading-heading-m">
-                      {link.name}
-                    </span>
-                  )}
+                  <span
+                    className={`custom-transition-opacity ${
+                      minMenu
+                        ? "opacity-0 invisible text-[0px]"
+                        : "opacity-100 visible text-heading-xs lg:text-heading-m"
+                    } sr-only capitalize tracking-heading-xs leading-heading-xs md:not-sr-only md:whitespace-nowrap lg:tracking-heading-m lg:leading-heading-m`}
+                  >
+                    {link.name}
+                  </span>
                 </Link>
               </li>
             );
           })}
         </ul>
       </nav>
+
       <Button
         variant="sidebar"
         state={minMenu}
         icon={IconMinimizeMenu}
-        onClick={handleMinimizeMenu}
+        onClick={() => setMinMenu(!minMenu)}
       >
         Minimize Menu
       </Button>
