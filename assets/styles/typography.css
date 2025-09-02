@@ -1,0 +1,6 @@
+h1 {
+  font-size: var(--text-heading-xl);
+  font-weight: var(--font-weight-heading-xl);
+  letter-spacing: var(--tracking-heading-xl);
+  line-height: var(--leading-heading-xl);
+}
