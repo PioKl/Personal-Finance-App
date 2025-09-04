@@ -25,7 +25,7 @@ const Button = <T,>({
     sidebar:
       "group w-fit items-end text-left text-heading-m tracking-heading-m leading-heading-m font-heading-m text-button hidden lg:flex lg:mt-auto lg:ml-space-400 lg:mb-14.5",
     //Link
-    link: "",
+    link: "text-preset-4 tracking-preset-4 leading-[149%] font-preset-4 text-link",
   };
 
   return isALink ? (
