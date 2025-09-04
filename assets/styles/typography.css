@@ -4,3 +4,10 @@ h1 {
   letter-spacing: var(--tracking-heading-xl);
   line-height: var(--leading-heading-xl);
 }
+
+h2 {
+  font-size: var(--text-heading-l);
+  font-weight: var(--font-weight-heading-l);
+  letter-spacing: var(--tracking-heading-l);
+  line-height: var(--leading-heading-l);
+}
