@@ -10,3 +10,10 @@ export type Balance = {
   income: number;
   expenses: number;
 };
+
+export type Pots = {
+  name: string;
+  target: number;
+  total: number;
+  theme: string;
+};
