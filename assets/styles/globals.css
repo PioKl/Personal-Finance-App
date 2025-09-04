@@ -47,11 +47,14 @@
   --menu-link-icon-color: var(--grey300);
   --menu-link-icon-color: var(--grey300);
 
+  --link-color: var(--grey500);
+
   --button-color-active: var(--grey100);
   --button-color: var(--grey300);
 
   --fill-color-one: var(--grey900);
   --fill-color-two: var(--white);
+  --fill-color-three: var(--beige100);
 
   --text-color-one: var(--grey900);
   --text-color-two: var(--white);
@@ -206,11 +209,15 @@
   /* Fill colors */
   --color-fill-one: var(--fill-color-one);
   --color-fill-two: var(--fill-color-two);
+  --color-fill-three: var(--fill-color-three);
 
   /* Text colors */
   --color-color-one: var(--text-color-one);
   --color-color-two: var(--text-color-two);
   --color-color-three: var(--text-color-three);
+
+  /* Color Link */
+  --color-link: var(--link-color);
 }
 
 @media (prefers-color-scheme: dark) {
