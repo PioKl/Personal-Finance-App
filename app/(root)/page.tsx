@@ -54,8 +54,8 @@ export default function Home() {
               <IconCaretRight />
             </Button>
           </div>
-          <div className="flex flex-col md:flex-row">
-            <div className="flex items-center gap-4 py-5 px-4 bg-fill-three rounded-default">
+          <div className="flex flex-col gap-space-250 md:flex-row">
+            <div className="flex items-center gap-space-200 py-5 px-4 bg-fill-three rounded-default md:pr-22">
               <IconPot />
               <div className="grid gap-3">
                 <span className="text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4 text-color-three">
@@ -66,9 +66,21 @@ export default function Home() {
                 </span>
               </div>
             </div>
-            <ul>
+            <ul className="grid grid-cols-2 gap-space-200 md:flex-1">
               {potsSlice.map((item, index) => (
-                <li key={index}>{item.name}</li>
+                <li
+                  key={index}
+                  className="flex gap-space-200 [&:nth-child(3)]:col-start-2 [&:nth-child(3)]:row-start-1 before:content-[''] before:w-1 [&:nth-child(1)]:before:bg-pots-one [&:nth-child(2)]:before:bg-pots-three [&:nth-child(3)]:before:bg-pots-two [&:nth-child(4)]:before:bg-pots-four before:rounded-default"
+                >
+                  <div className="grid gap-space-50">
+                    <span className="text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5 text-color-three">
+                      {item.name}
+                    </span>
+                    <span className="text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4-bold text-color-one">
+                      ${item.total}
+                    </span>
+                  </div>
+                </li>
               ))}
             </ul>
           </div>
