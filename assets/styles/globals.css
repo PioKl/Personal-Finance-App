@@ -60,6 +60,12 @@
   --text-color-two: var(--white);
   --text-color-three: var(--grey500);
 
+  --border-color: var(--grey100);
+
+  --amount-color: var(--green);
+  --amount-alt-color: var(--grey900);
+  --date-color: var(--grey500);
+
   /* Typography */
   --text-preset-1-font-size: 32px;
   --text-preset-1-font-weight: 700;
@@ -211,6 +217,9 @@
   --color-fill-two: var(--fill-color-two);
   --color-fill-three: var(--fill-color-three);
 
+  /* Border colors */
+  --border-color-default: var(--border-color);
+
   /* Text colors */
   --color-color-one: var(--text-color-one);
   --color-color-two: var(--text-color-two);
@@ -224,6 +233,11 @@
   --color-pots-two: var(--cyan);
   --color-pots-three: var(--navy);
   --color-pots-four: var(--yellow);
+
+  /* Transactions */
+  --color-amount: var(--amount-color);
+  --color-amount-alt: var(var(--amount-alt-color));
+  --color-date: var(--date-color);
 }
 
 @media (prefers-color-scheme: dark) {
