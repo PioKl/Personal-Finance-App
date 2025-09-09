@@ -41,7 +41,7 @@ const Header = () => {
 
   return (
     <header
-      className={`flex flex-col bg-header h-auto sticky bottom-0 pt-space-100 px-space-200 rounded-t-menu-mobile md:px-space-500 lg:h-screen lg:top-0 lg:py-space-500 lg:pl-0 lg:pr-space-300 lg:rounded-t-none lg:rounded-r-menu custom-transition-width ${
+      className={`flex flex-col bg-header h-auto sticky z-10 bottom-0 pt-space-100 px-space-200 rounded-t-menu-mobile md:px-space-500 lg:h-screen lg:top-0 lg:py-space-500 lg:pl-0 lg:pr-space-300 lg:rounded-t-none lg:rounded-r-menu custom-transition-width ${
         minMenu ? "lg:w-22" : "lg:w-75"
       }`}
     >
