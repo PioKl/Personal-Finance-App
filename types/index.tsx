@@ -26,3 +26,9 @@ export type Transactions = {
   amount: number;
   recurring: boolean;
 };
+
+export type Budgets = {
+  category: string;
+  maximum: number;
+  theme: string;
+};
