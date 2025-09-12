@@ -89,7 +89,7 @@ export default function Home() {
                 </Button>
               </div>
               <div className="flex flex-col gap-space-250 md:flex-row">
-                <div className="flex items-center gap-space-200 py-5 px-4 bg-fill-three rounded-default md:pr-22">
+                <div className="flex items-center gap-space-200 py-5 px-4 bg-fill-three rounded-default md:pr-[clamp(1rem,-35rem+45vw,5.5rem)]">
                   <IconPot />
                   <div className="grid gap-3">
                     <span className="text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4 text-color-three">
