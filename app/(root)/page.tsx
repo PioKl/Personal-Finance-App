@@ -193,7 +193,7 @@ export default function Home() {
                     <div className="pointer-events-auto">
                       <Doughnut data={chartData} options={options} />
                     </div>
-                    <div className="absolute flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[187.5px] h-[187.5px] bg-white/50 rounded-full">
+                    <div className="absolute flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[187.5px] h-[187.5px] bg-white/25 rounded-full">
                       <span className="text-preset-1 tracking-preset-1 leading-preset-1 font-preset-1 text-color-one">
                         $338
                       </span>
