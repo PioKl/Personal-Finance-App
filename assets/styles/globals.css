@@ -188,6 +188,7 @@
   --radius-menu: 16px;
   --radius-menu-mobile: 8px;
   --radius-default: 12px;
+  --radius-alt: 8px;
 }
 
 @theme inline {
