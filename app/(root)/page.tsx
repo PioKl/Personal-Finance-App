@@ -223,6 +223,40 @@ export default function Home() {
                 </ul>
               </div>
             </div>
+            <div className="flex flex-col gap-space-400 py-space-300 px-space-250 bg-fill-two rounded-default md:p-space-400">
+              <div className="flex w-full items-end justify-between">
+                <h2>Recurring Bills</h2>
+                <Button
+                  variant="link"
+                  isALink={true}
+                  link="/recurring-bills"
+                  className="flex items-center gap-space-150"
+                >
+                  See Details
+                  <IconCaretRight />
+                </Button>
+              </div>
+              <ul className="grid gap-space-150">
+                <li className="flex justify-between px-space-200 py-space-250 text-preset-4 tracking-preset-4 leading-preset-4 bg-fill-three rounded-alt border-l-4 border-l-pots-one">
+                  <span className="text-color-three">Paid Bills</span>
+                  <span className="font-preset-4-bold text-color-one">
+                    ${priceDollarsFormatting(190)}
+                  </span>
+                </li>
+                <li className="flex justify-between px-space-200 py-space-250 text-preset-4 tracking-preset-4 leading-preset-4 bg-fill-three rounded-alt border-l-4 border-l-pots-four">
+                  <span className="text-color-three">Total Upcoming</span>
+                  <span className="font-preset-4-bold text-color-one">
+                    ${priceDollarsFormatting(194.98)}
+                  </span>
+                </li>
+                <li className="flex justify-between px-space-200 py-space-250 text-preset-4 tracking-preset-4 leading-preset-4 bg-fill-three rounded-alt border-l-4 border-l-pots-two">
+                  <span className="text-color-three">Due Soon</span>
+                  <span className="font-preset-4-bold text-color-one">
+                    ${priceDollarsFormatting(59.98)}
+                  </span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
