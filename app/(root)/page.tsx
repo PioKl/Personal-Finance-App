@@ -1,21 +1,17 @@
-"use client";
 import data from "@/data/data.json";
-import Image from "next/image";
 import { Balance, Pots, Transactions, Budgets } from "@/types";
-import {
-  priceDollarsFormatting,
-  formatData,
-  formatAmount,
-} from "@/utils/formattingFunctions";
-import Button from "@/components/ui/Button";
-import IconCaretRight from "@/assets/icons/icon-caret-right.svg";
+import { priceDollarsFormatting } from "@/utils/formattingFunctions";
 import IconPot from "@/assets/icons/icon-pot.svg";
 import "chart.js/auto";
-import { Doughnut } from "react-chartjs-2";
+import SectionCard from "@/components/overview/SectionCard";
+import BudgetChart from "@/components/overview/BudgetChart";
+import RecurringBillItem from "@/components/overview/RecurringBillItem";
+import TransactionsList from "@/components/overview/TransactionsList";
+import PotsList from "@/components/overview/PotsList";
 
-/* export const metadata = {
+export const metadata = {
   title: "Overview",
-}; */
+};
 
 export default function Home() {
   //const { balance, pots } = data as { balance: Balance; pots: Pots[] };
@@ -25,29 +21,6 @@ export default function Home() {
   const { budgets } = data as { budgets: Budgets[] };
   const potsSlice = pots.slice(0, 4);
   const transactionsSlice = transactions.slice(0, 5);
-  const budgetsLabels = budgets.map((item) => item.category);
-  const budgetsMaximum = budgets.map((item) => item.maximum);
-  const budgetsTheme = budgets.map((item) => item.theme);
-
-  const chartData = {
-    labels: budgetsLabels,
-    datasets: [
-      {
-        data: budgetsMaximum,
-        backgroundColor: budgetsTheme,
-        borderWidth: 0,
-      },
-    ],
-  };
-
-  const options = {
-    plugins: {
-      legend: {
-        display: false,
-      },
-    },
-    cutout: "66%",
-  };
 
   return (
     <>
@@ -76,19 +49,7 @@ export default function Home() {
         </div>
         <div className="flex flex-col gap-space-400 xl:flex-row">
           <div className="grid gap-space-400 xl:flex-1">
-            <div className="grid gap-space-250 py-space-300 px-space-250 bg-fill-two rounded-default md:p-space-400">
-              <div className="flex items-end justify-between">
-                <h2>Pots</h2>
-                <Button
-                  variant="link"
-                  isALink={true}
-                  link="/pots"
-                  className="flex items-center gap-space-150"
-                >
-                  See Details
-                  <IconCaretRight />
-                </Button>
-              </div>
+            <SectionCard title="Pots" link="/pots" linkLabel="See Details">
               <div className="flex flex-col gap-space-250 md:flex-row">
                 <div className="flex items-center gap-space-200 py-5 px-4 bg-fill-three rounded-default md:pr-[clamp(1rem,-35rem+45vw,5.5rem)]">
                   <IconPot />
@@ -101,162 +62,53 @@ export default function Home() {
                     </span>
                   </div>
                 </div>
-                <ul className="grid grid-cols-2 gap-space-200 md:flex-1">
-                  {potsSlice.map((item, index) => (
-                    <li
-                      key={index}
-                      className="flex gap-space-200 [&:nth-child(3)]:col-start-2 [&:nth-child(3)]:row-start-1 before:content-[''] before:w-1 [&:nth-child(1)]:before:bg-pots-one [&:nth-child(2)]:before:bg-pots-three [&:nth-child(3)]:before:bg-pots-two [&:nth-child(4)]:before:bg-pots-four before:rounded-default"
-                    >
-                      <div className="grid gap-space-50">
-                        <span className="text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5 text-color-three">
-                          {item.name}
-                        </span>
-                        <span className="text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4-bold text-color-one">
-                          ${item.total}
-                        </span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+                <PotsList pots={potsSlice} />
               </div>
-            </div>
+            </SectionCard>
 
-            <div className="flex flex-col gap-space-400 py-space-300 px-space-250 bg-fill-two rounded-default md:p-space-400">
-              <div className="flex w-full items-end justify-between">
-                <h2>Transactions</h2>
-                <Button
-                  variant="link"
-                  isALink={true}
-                  link="/transactions"
-                  className="flex items-center gap-space-150"
-                >
-                  View All
-                  <IconCaretRight />
-                </Button>
-              </div>
-              <ul className="grid gap-space-250">
-                {transactionsSlice.map((item, index) => (
-                  <li
-                    key={index}
-                    className="flex justify-between pb-space-250 border-b-1 border-default"
-                  >
-                    <div className="flex items-center gap-space-200">
-                      <div className="relative w-8 h-8 md:w-10 md:h-10">
-                        <Image
-                          src={item.avatar.replace("./", "/")}
-                          alt={item.name}
-                          fill
-                          className="rounded-full object-cover"
-                          sizes="(min-width: 768px) 40px, 32px"
-                        />
-                      </div>
-                      <span className="text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4-bold">
-                        {item.name}
-                      </span>
-                    </div>
-
-                    <div className="grid gap-space-100">
-                      <span
-                        className={`
-                      text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4-bold
-                      ${item.amount >= 0 ? "text-amount" : "text-amount-alt"}
-                    `}
-                      >
-                        {formatAmount(item.amount)}
-                      </span>
-                      <span className="text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5 text-date">
-                        {formatData(item.date)}
-                      </span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <SectionCard
+              className="gap-space-400"
+              title="Transactions"
+              link="/transactions"
+              linkLabel="View All"
+            >
+              <TransactionsList transactions={transactionsSlice} />
+            </SectionCard>
           </div>
           <div className="grid gap-space-400">
-            <div className="flex flex-col gap-space-400 py-space-300 px-space-250 bg-fill-two rounded-default md:p-space-400">
-              <div className="flex w-full items-end justify-between">
-                <h2>Budgets</h2>
-                <Button
-                  variant="link"
-                  isALink={true}
-                  link="/budgets"
-                  className="flex items-center gap-space-150"
-                >
-                  See Details
-                  <IconCaretRight />
-                </Button>
-              </div>
-              <div className="flex flex-col gap-space-250 md:flex-row lg:flex-col xl:flex-row">
-                <div className="relative justify-items-center md:ml-auto">
-                  <div className="w-[240px] h-[240px] pointer-events-none">
-                    <div className="pointer-events-auto">
-                      <Doughnut data={chartData} options={options} />
-                    </div>
-                    <div className="absolute flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[187.5px] h-[187.5px] bg-white/25 rounded-full">
-                      <span className="text-preset-1 tracking-preset-1 leading-preset-1 font-preset-1 text-color-one">
-                        $338
-                      </span>
-                      <span className="text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5 text-color-three">
-                        of ${budgetsMaximum.reduce((a, b) => a + b, 0)} limit
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <ul className="grid grid-cols-2 gap-space-200 md:ml-auto md:grid-cols-1 lg:grid-cols-2 lg:ml-0 xl:grid-cols-1 xl:ml-auto">
-                  {budgets.map((item, index) => (
-                    <li key={index} className="flex gap-space-200">
-                      <span
-                        className="w-1 rounded-default"
-                        style={{ backgroundColor: item.theme }}
-                      />
-                      <div className="grid gap-space-50">
-                        <span className="text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5 text-color-three">
-                          {item.category}
-                        </span>
-                        <span className="text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4-bold text-color-one">
-                          ${priceDollarsFormatting(item.maximum)}
-                        </span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            <div className="flex flex-col gap-space-400 py-space-300 px-space-250 bg-fill-two rounded-default md:p-space-400">
-              <div className="flex w-full items-end justify-between">
-                <h2>Recurring Bills</h2>
-                <Button
-                  variant="link"
-                  isALink={true}
-                  link="/recurring-bills"
-                  className="flex items-center gap-space-150"
-                >
-                  See Details
-                  <IconCaretRight />
-                </Button>
-              </div>
+            <SectionCard
+              className="gap-space-400"
+              title="Budgets"
+              link="/budgers"
+              linkLabel="See Details"
+            >
+              <BudgetChart budgets={budgets} />
+            </SectionCard>
+
+            <SectionCard
+              className="gap-space-400"
+              title="Recurring Bills"
+              link="/recurring-bills"
+              linkLabel="See Details"
+            >
               <ul className="grid gap-space-150">
-                <li className="flex justify-between px-space-200 py-space-250 text-preset-4 tracking-preset-4 leading-preset-4 bg-fill-three rounded-alt border-l-4 border-l-pots-one">
-                  <span className="text-color-three">Paid Bills</span>
-                  <span className="font-preset-4-bold text-color-one">
-                    ${priceDollarsFormatting(190)}
-                  </span>
-                </li>
-                <li className="flex justify-between px-space-200 py-space-250 text-preset-4 tracking-preset-4 leading-preset-4 bg-fill-three rounded-alt border-l-4 border-l-pots-four">
-                  <span className="text-color-three">Total Upcoming</span>
-                  <span className="font-preset-4-bold text-color-one">
-                    ${priceDollarsFormatting(194.98)}
-                  </span>
-                </li>
-                <li className="flex justify-between px-space-200 py-space-250 text-preset-4 tracking-preset-4 leading-preset-4 bg-fill-three rounded-alt border-l-4 border-l-pots-two">
-                  <span className="text-color-three">Due Soon</span>
-                  <span className="font-preset-4-bold text-color-one">
-                    ${priceDollarsFormatting(59.98)}
-                  </span>
-                </li>
+                <RecurringBillItem
+                  label="Paid Bills"
+                  value={190}
+                  borderColorClass="border-l-pots-one"
+                />
+                <RecurringBillItem
+                  label="Total Upcoming"
+                  value={194.98}
+                  borderColorClass="border-l-pots-four"
+                />
+                <RecurringBillItem
+                  label="Due Soon"
+                  value={59.98}
+                  borderColorClass="border-l-pots-two"
+                />
               </ul>
-            </div>
+            </SectionCard>
           </div>
         </div>
       </section>
