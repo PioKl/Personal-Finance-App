@@ -1,6 +1,6 @@
 import { Transactions } from "@/types";
 import Image from "next/image";
-import { formatAmount, formatData } from "@/utils/formattingFunctions";
+import { formatAmount, formatDate } from "@/utils/formattingFunctions";
 
 export default function TransactionItem({
   avatar,
@@ -34,7 +34,7 @@ export default function TransactionItem({
           {formatAmount(amount)}
         </span>
         <span className="text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5 text-date">
-          {formatData(date)}
+          {formatDate(date)}
         </span>
       </div>
     </li>
