@@ -1,16 +1,11 @@
+import { RecurringBillItem as RecurringBillItemType } from "@/types";
 import { priceDollarsFormatting } from "@/utils/formattingFunctions";
-
-type RecurringBillItemProps = {
-  label: string;
-  value: number;
-  borderColorClass: string;
-};
 
 export default function RecurringBillItem({
   label,
   value,
   borderColorClass,
-}: RecurringBillItemProps) {
+}: RecurringBillItemType) {
   return (
     <li
       className={`flex justify-between px-space-200 py-space-250 text-preset-4 tracking-preset-4 leading-preset-4 bg-fill-three rounded-alt border-l-4 ${borderColorClass}`}
