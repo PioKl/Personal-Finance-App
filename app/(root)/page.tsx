@@ -2,7 +2,6 @@ import data from "@/data/data.json";
 import { Balance, Pots, Transactions, Budgets } from "@/types";
 import { priceDollarsFormatting } from "@/utils/formattingFunctions";
 import IconPot from "@/assets/icons/icon-pot.svg";
-import "chart.js/auto";
 import SectionCard from "@/components/overview/SectionCard";
 import BudgetChart from "@/components/overview/BudgetChart";
 import RecurringBillItem from "@/components/overview/RecurringBillItem";
