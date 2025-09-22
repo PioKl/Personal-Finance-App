@@ -9,7 +9,7 @@ export const priceDollarsFormatting = (price: number): string => {
 
 //Date Format
 
-export function formatData(dateString: string): string {
+export function formatDate(dateString: string): string {
   return new Date(dateString).toLocaleString("en-GB", {
     day: "2-digit",
     month: "short",
