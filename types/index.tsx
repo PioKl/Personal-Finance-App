@@ -32,3 +32,19 @@ export type Budgets = {
   maximum: number;
   theme: string;
 };
+
+//Overview
+
+export type RecurringBillItem = {
+  label: string;
+  value: number;
+  borderColorClass: string;
+};
+
+export type SectionCard = {
+  title: string;
+  link: string;
+  linkLabel: string;
+  children: React.ReactNode;
+  className?: string;
+};
