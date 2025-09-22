@@ -1,10 +1,4 @@
-type SectionCardProps = {
-  title: string;
-  link: string;
-  linkLabel: string;
-  children: React.ReactNode;
-  className?: string;
-};
+import { SectionCard as SectionCardType } from "@/types";
 
 import Button from "../ui/Button";
 import IconCaretRight from "@/assets/icons/icon-caret-right.svg";
@@ -15,7 +9,7 @@ export default function SectionCard({
   linkLabel,
   children,
   className = "",
-}: SectionCardProps) {
+}: SectionCardType) {
   return (
     <div
       className={`flex flex-col gap-space-250 py-space-300 px-space-250 bg-fill-two rounded-default md:p-space-400 ${className}`}
