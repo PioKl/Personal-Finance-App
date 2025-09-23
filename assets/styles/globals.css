@@ -111,6 +111,29 @@
   }
 }
 
+/* Mui style dla komórek */
+@layer mui {
+  .MuiTableCell-root {
+    @apply !border-b !border-default !text-preset-5 !tracking-preset-5 !leading-preset-5 !font-preset-5 !text-color-three;
+  }
+
+  /* Nadpisanie dla indywidualnych komórek */
+  .MuiTableCell-root.mui-cell-one {
+    @apply !text-preset-4 !tracking-preset-4 !leading-preset-4 !font-preset-4-bold !text-color-one;
+  }
+
+  .MuiTableCell-root.mui-amount {
+    @apply !text-preset-4 !tracking-preset-4 !leading-preset-4 !font-preset-4-bold;
+  }
+
+  .MuiTableCell-root.mui-amount-positive {
+    @apply !text-amount;
+  }
+  .MuiTableCell-root.mui-amount-negative {
+    @apply !text-amount-alt;
+  }
+}
+
 @theme {
   /* Font */
   --font-sans: var(--font-public-sans);
@@ -238,7 +261,7 @@
 
   /* Transactions */
   --color-amount: var(--amount-color);
-  --color-amount-alt: var(var(--amount-alt-color));
+  --color-amount-alt: var(--amount-alt-color);
   --color-date: var(--date-color);
 }
 
