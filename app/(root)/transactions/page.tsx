@@ -9,7 +9,7 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
-import { formatDate } from "@/utils/formattingFunctions";
+import { formatDate, formatAmount } from "@/utils/formattingFunctions";
 
 const Transactions = () => {
   const { transactions } = data as { transactions: Transactions[] };
@@ -23,7 +23,7 @@ const Transactions = () => {
         <TableContainer>
           <Table>
             <TableHead>
-              <TableRow>
+              <TableRow className="[&>th]:!text-preset-5 [&>th]:!tracking-preset-5 [&>th]:!leading-preset-5 [&>th]:!font-preset-5 [&>th]:!text-color-three">
                 <TableCell className="!p-space-200">
                   Recipient / Sender
                 </TableCell>
@@ -36,10 +36,21 @@ const Transactions = () => {
             <TableBody>
               {transactions.map((item, index) => (
                 <TableRow key={index}>
-                  <TableCell className="!p-space-200">{item.name}</TableCell>
+                  <TableCell className="!p-space-200 mui-cell-one">
+                    {item.name}
+                  </TableCell>
                   <TableCell>{item.category}</TableCell>
                   <TableCell>{formatDate(item.date)}</TableCell>
-                  <TableCell align="right">{item.amount.toFixed(2)}</TableCell>
+                  <TableCell
+                    align="right"
+                    className={`mui-amount ${
+                      item.amount > 0
+                        ? "mui-amount-positive"
+                        : "mui-amount-negative"
+                    }`}
+                  >
+                    {formatAmount(item.amount)}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
