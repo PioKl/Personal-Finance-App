@@ -132,6 +132,10 @@
   .MuiTableCell-root.mui-amount-negative {
     @apply !text-amount-alt;
   }
+
+  .MuiTableCell-root .mui-mobile-text {
+    @apply !text-preset-5 !tracking-preset-5 !leading-preset-5 !font-preset-5 !text-color-three;
+  }
 }
 
 @theme {
