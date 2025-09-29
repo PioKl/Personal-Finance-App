@@ -1,3 +1,5 @@
+"use client";
+import { useState } from "react";
 import data from "@/data/data.json";
 import type { Transactions } from "@/types";
 import {
@@ -8,12 +10,66 @@ import {
   TableHead,
   TableRow,
   Paper,
+  TextField,
+  InputAdornment,
+  MenuItem,
 } from "@mui/material";
 import { formatDate, formatAmount } from "@/utils/formattingFunctions";
 import Image from "next/image";
+import IconSearch from "@/assets/icons/icon-search.svg";
+import IconDown from "@/assets/icons/icon-caret-down.svg";
+
+interface RotatingIconProps {
+  className?: string;
+}
 
 const Transactions = () => {
   const { transactions } = data as { transactions: Transactions[] };
+  //const [selectOpen, setSelectOpen] = useState(false);
+
+  const RotatingIcon = ({ className, ...other }: RotatingIconProps) => {
+    return (
+      <IconDown
+        {...other} // obsługuje kliknięcie selecta i dostępność
+        className={`!top-[45%] !right-[16px] transition-transform duration-200 ${className}`}
+      />
+    );
+  };
+
+  const sortSelectOptions = [
+    {
+      value: "Latest",
+    },
+    {
+      value: "Oldest",
+    },
+    {
+      value: "A to Z",
+    },
+    {
+      value: "Z to A",
+    },
+    {
+      value: "Highest",
+    },
+    {
+      value: "Lowest",
+    },
+  ];
+
+  const cetegorySelectOptions = [
+    "All Transactions",
+    "Entertainment",
+    "Bills",
+    "Personal Care",
+    "Transportation",
+    "General",
+    "Dining Out",
+    "Shopping",
+    "Lifestyle",
+    "Education",
+    "Groceries",
+  ];
 
   return (
     <section className="grid gap-space-400">
@@ -21,6 +77,65 @@ const Transactions = () => {
         <h1>Transactions</h1>
       </div>
       <div className="flex flex-col gap-space-250 py-space-300 px-space-250 bg-fill-two rounded-default md:p-space-400 ">
+        <div className="flex justify-between">
+          <div>
+            <TextField
+              id="outlined-basic"
+              label="Search Transaction"
+              variant="outlined"
+              className="mui-search mui-label"
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconSearch />
+                    </InputAdornment>
+                  ),
+                },
+              }}
+            />
+          </div>
+          <div className="flex gap-space-300">
+            <div className="flex items-center gap-space-100">
+              <span>Sort by</span>
+              <TextField
+                select
+                defaultValue="Latest"
+                className="w-28.5 mui-select"
+                slotProps={{
+                  select: {
+                    IconComponent: RotatingIcon,
+                  },
+                }}
+              >
+                {sortSelectOptions.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.value}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
+            <div className="flex items-center gap-space-100">
+              <span>Category</span>
+              <TextField
+                select
+                defaultValue="All Transactions"
+                className="w-44.5 mui-select"
+                slotProps={{
+                  select: {
+                    IconComponent: RotatingIcon,
+                  },
+                }}
+              >
+                {cetegorySelectOptions.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
+          </div>
+        </div>
         <TableContainer>
           <Table>
             <TableHead>
