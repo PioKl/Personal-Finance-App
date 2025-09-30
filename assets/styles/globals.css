@@ -62,10 +62,13 @@
   --text-color-three: var(--grey500);
 
   --border-color: var(--grey100);
+  --border-color-active: var(--grey900);
 
   --amount-color: var(--green);
   --amount-alt-color: var(--grey900);
   --date-color: var(--grey500);
+
+  --text-color-input-placeholder: var(--beige500);
 
   /* Typography */
   --text-preset-1-font-size: 32px;
@@ -141,16 +144,44 @@
     @apply !px-space-250 !py-space-150;
   }
 
+  .mui-search .MuiInputBase-input {
+    @apply !text-color-one;
+  }
+
+  .mui-search .MuiOutlinedInput-root {
+    @apply !rounded-alt;
+  }
+
+  /* można też tak: .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  @apply !border-active !border;
+} */
+
+  .mui-select
+    .MuiOutlinedInput-root.Mui-focused
+    .MuiOutlinedInput-notchedOutline,
+  .mui-search
+    .MuiOutlinedInput-root.Mui-focused
+    .MuiOutlinedInput-notchedOutline {
+    @apply !border-active !border;
+  }
+
   .mui-label .MuiInputLabel-root {
+    @apply !text-preset-4 !tracking-preset-4 !leading-preset-4 !font-preset-4 !text-input-placeholder;
     transform: translate(14px, 12px) scale(1) !important;
   }
 
-  .mui-label .MuiInputLabel-root.Mui-focused {
+  .mui-label .MuiInputLabel-root.Mui-focused,
+  .mui-label .MuiInputLabel-root.MuiInputLabel-shrink {
+    @apply !text-preset-3 !tracking-preset-3 !leading-preset-3 !font-preset-3;
     transform: translate(14px, -9px) scale(0.75) !important;
   }
 
   .mui-select .MuiSelect-select {
     @apply !px-space-250 !py-space-150;
+  }
+
+  .mui-select .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+    @apply !rounded-alt;
   }
 }
 
@@ -264,6 +295,7 @@
 
   /* Border colors */
   --border-color-default: var(--border-color);
+  --border-color-active: var(--border-color-active);
 
   /* Text colors */
   --color-color-one: var(--text-color-one);
@@ -283,6 +315,9 @@
   --color-amount: var(--amount-color);
   --color-amount-alt: var(--amount-alt-color);
   --color-date: var(--date-color);
+
+  /* Inputs */
+  --color-input-placeholder: var(--text-color-input-placeholder);
 }
 
 @media (prefers-color-scheme: dark) {
