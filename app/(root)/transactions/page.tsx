@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import clsx from "clsx";
 import data from "@/data/data.json";
 import type { Transactions } from "@/types";
 import {
@@ -13,25 +13,56 @@ import {
   TextField,
   InputAdornment,
   MenuItem,
+  useMediaQuery,
+  createTheme,
 } from "@mui/material";
 import { formatDate, formatAmount } from "@/utils/formattingFunctions";
 import Image from "next/image";
 import IconSearch from "@/assets/icons/icon-search.svg";
 import IconDown from "@/assets/icons/icon-caret-down.svg";
+import IconFilterMobile from "@/assets/icons/icon-filter-mobile.svg";
+import IconSortMobile from "@/assets/icons/icon-sort-mobile.svg";
 
 interface RotatingIconProps {
   className?: string;
 }
 
+interface IconFilterProps {
+  className?: string;
+}
+
+interface IconSortProps {
+  className?: string;
+}
+
 const Transactions = () => {
   const { transactions } = data as { transactions: Transactions[] };
-  //const [selectOpen, setSelectOpen] = useState(false);
 
   const RotatingIcon = ({ className, ...other }: RotatingIconProps) => {
     return (
       <IconDown
         {...other} // obsługuje kliknięcie selecta i dostępność
         className={`!top-[45%] !right-[16px] transition-transform duration-200 ${className}`}
+      />
+    );
+  };
+
+  const IconFilter = ({ className, ...other }: IconFilterProps) => {
+    return (
+      <IconFilterMobile
+        {...other}
+        className={`!right-[11px] ${className}`}
+        style={{ transform: "none" }} // nadpisuje inline transform od MUI
+      />
+    );
+  };
+
+  const IconSort = ({ className, ...other }: IconSortProps) => {
+    return (
+      <IconSortMobile
+        {...other}
+        className={`!right-[11px] ${className}`}
+        style={{ transform: "none" }} // nadpisuje inline transform od MUI
       />
     );
   };
@@ -71,13 +102,26 @@ const Transactions = () => {
     "Groceries",
   ];
 
+  const theme = createTheme({
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 640,
+        md: 768,
+        lg: 1024,
+        xl: 1280,
+      },
+    },
+  });
+  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+
   return (
     <section className="grid gap-space-400">
       <div>
         <h1>Transactions</h1>
       </div>
       <div className="flex flex-col gap-space-250 py-space-300 px-space-250 bg-fill-two rounded-default md:p-space-400 ">
-        <div className="flex justify-between">
+        <div className="flex justify-between gap-space-300">
           <div>
             <TextField
               id="outlined-basic"
@@ -95,16 +139,22 @@ const Transactions = () => {
               }}
             />
           </div>
-          <div className="flex gap-space-300">
+          <div className="flex md:gap-space-300">
             <div className="flex items-center gap-space-100">
-              <span>Sort by</span>
+              <span className="hidden text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4 text-color-three whitespace-nowrap md:flex">
+                Sort by
+              </span>
               <TextField
                 select
                 defaultValue="Latest"
-                className="w-28.5 mui-select"
+                className={clsx(
+                  "mui-select",
+                  isMdUp ? "w-28.5" : "mui-select-mobile"
+                )}
                 slotProps={{
                   select: {
-                    IconComponent: RotatingIcon,
+                    IconComponent: isMdUp ? RotatingIcon : IconSort,
+                    renderValue: () => (isMdUp ? "Latest" : null),
                   },
                 }}
               >
@@ -116,14 +166,20 @@ const Transactions = () => {
               </TextField>
             </div>
             <div className="flex items-center gap-space-100">
-              <span>Category</span>
+              <span className="hidden text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4 text-color-three md:flex">
+                Category
+              </span>
               <TextField
                 select
                 defaultValue="All Transactions"
-                className="w-44.5 mui-select"
+                className={clsx(
+                  "mui-select",
+                  isMdUp ? "w-44.5" : "mui-select-mobile"
+                )}
                 slotProps={{
                   select: {
-                    IconComponent: RotatingIcon,
+                    IconComponent: isMdUp ? RotatingIcon : IconFilter,
+                    renderValue: () => (isMdUp ? "All Transactions" : null),
                   },
                 }}
               >
