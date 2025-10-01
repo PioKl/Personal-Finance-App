@@ -165,9 +165,24 @@
     @apply !border-active !border;
   }
 
+  .mui-select-mobile .MuiOutlinedInput-notchedOutline {
+    @apply !border-0;
+  }
+
   .mui-label .MuiInputLabel-root {
     @apply !text-preset-4 !tracking-preset-4 !leading-preset-4 !font-preset-4 !text-input-placeholder;
     transform: translate(14px, 12px) scale(1) !important;
+  }
+  @media (min-width: 768px) {
+    .mui-label .MuiInputLabel-root {
+      width: clamp(5.5rem, -34.25rem + 82.813vw, 18.75rem);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .mui-label .MuiInputLabel-root {
+      width: clamp(3.75rem, -48.558rem + 81.731vw, 25rem);
+    }
   }
 
   .mui-label .MuiInputLabel-root.Mui-focused,
@@ -177,11 +192,15 @@
   }
 
   .mui-select .MuiSelect-select {
-    @apply !px-space-250 !py-space-150;
+    @apply !px-space-250 !py-space-150 !text-preset-4 !tracking-preset-4 !leading-preset-4 !font-preset-4;
   }
 
   .mui-select .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
     @apply !rounded-alt;
+  }
+
+  .mui-select-mobile .MuiSelect-select {
+    @apply !px-space-250 !py-space-150 !flex !items-center !justify-center;
   }
 }
 
