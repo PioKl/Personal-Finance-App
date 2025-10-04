@@ -1,4 +1,6 @@
+//dsa
 "use client";
+import { useMemo, useState } from "react";
 import clsx from "clsx";
 import data from "@/data/data.json";
 import type { Transactions } from "@/types";
@@ -88,19 +90,22 @@ const Transactions = () => {
     },
   ];
 
-  const cetegorySelectOptions = [
-    "All Transactions",
-    "Entertainment",
-    "Bills",
-    "Personal Care",
-    "Transportation",
-    "General",
-    "Dining Out",
-    "Shopping",
-    "Lifestyle",
-    "Education",
-    "Groceries",
-  ];
+  const categorySelectOptions = useMemo(
+    () => [
+      "All Transactions",
+      "Entertainment",
+      "Bills",
+      "Personal Care",
+      "Transportation",
+      "General",
+      "Dining Out",
+      "Shopping",
+      "Lifestyle",
+      "Education",
+      "Groceries",
+    ],
+    []
+  );
 
   const theme = createTheme({
     breakpoints: {
@@ -115,6 +120,61 @@ const Transactions = () => {
   });
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
+  const [searchValue, setSearchValue] = useState("");
+  const [sortValue, setSortValue] = useState(sortSelectOptions[0].value);
+  const [categoryValue, setCategoryValue] = useState(categorySelectOptions[0]);
+
+  const handleSearchTransactions = (value: string) => {
+    setSearchValue(value);
+  };
+
+  const handleSortBy = (value: string) => {
+    setSortValue(value);
+  };
+
+  const handleCategory = (value: string) => {
+    setCategoryValue(value);
+  };
+
+  const filteredAndSortedTranscations = useMemo(() => {
+    const filteredTransactions = transactions.filter((item) => {
+      const nameMatches = item.name
+        .toLowerCase()
+        .includes(searchValue.toLowerCase());
+      const categoryMatches =
+        categoryValue === categorySelectOptions[0] ||
+        item.category.toLowerCase().includes(categoryValue.toLowerCase());
+
+      return nameMatches && categoryMatches;
+    });
+
+    const sorted = [...filteredTransactions].sort((a, b) => {
+      switch (sortValue) {
+        case "Latest":
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        case "Oldest":
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        case "A to Z":
+          return a.name.localeCompare(b.name);
+        case "Z to A":
+          return b.name.localeCompare(a.name);
+        case "Highest":
+          return b.amount - a.amount;
+        case "Lowest":
+          return a.amount - b.amount;
+        default:
+          return 0;
+      }
+    });
+    return sorted;
+  }, [
+    transactions,
+    searchValue,
+    sortValue,
+    categoryValue,
+    categorySelectOptions,
+  ]);
+
   return (
     <section className="grid gap-space-400">
       <div>
@@ -128,6 +188,9 @@ const Transactions = () => {
               label="Search Transaction"
               variant="outlined"
               className="mui-search mui-label"
+              onChange={(e) => {
+                handleSearchTransactions(e.target.value);
+              }}
               slotProps={{
                 input: {
                   endAdornment: (
@@ -146,7 +209,11 @@ const Transactions = () => {
               </span>
               <TextField
                 select
-                defaultValue="Latest"
+                defaultValue={sortSelectOptions[0].value}
+                value={sortValue}
+                onChange={(e) => {
+                  handleSortBy(e.target.value);
+                }}
                 className={clsx(
                   "mui-select",
                   isMdUp ? "w-28.5" : "mui-select-mobile"
@@ -154,12 +221,16 @@ const Transactions = () => {
                 slotProps={{
                   select: {
                     IconComponent: isMdUp ? RotatingIcon : IconSort,
-                    renderValue: () => (isMdUp ? "Latest" : null),
+                    renderValue: () => (isMdUp ? sortValue : null),
                   },
                 }}
               >
                 {sortSelectOptions.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
+                  <MenuItem
+                    key={option.value}
+                    value={option.value}
+                    autoFocus={false}
+                  >
                     {option.value}
                   </MenuItem>
                 ))}
@@ -171,7 +242,11 @@ const Transactions = () => {
               </span>
               <TextField
                 select
-                defaultValue="All Transactions"
+                defaultValue={categorySelectOptions[0]}
+                value={categoryValue}
+                onChange={(e) => {
+                  handleCategory(e.target.value);
+                }}
                 className={clsx(
                   "mui-select",
                   isMdUp ? "w-44.5" : "mui-select-mobile"
@@ -179,12 +254,12 @@ const Transactions = () => {
                 slotProps={{
                   select: {
                     IconComponent: isMdUp ? RotatingIcon : IconFilter,
-                    renderValue: () => (isMdUp ? "All Transactions" : null),
+                    renderValue: () => (isMdUp ? categoryValue : null),
                   },
                 }}
               >
-                {cetegorySelectOptions.map((option) => (
-                  <MenuItem key={option} value={option}>
+                {categorySelectOptions.map((option) => (
+                  <MenuItem key={option} value={option} autoFocus={false}>
                     {option}
                   </MenuItem>
                 ))}
@@ -212,7 +287,7 @@ const Transactions = () => {
             </TableHead>
 
             <TableBody>
-              {transactions.map((item, index) => (
+              {filteredAndSortedTranscations.map((item, index) => (
                 <TableRow key={index}>
                   <TableCell className="!p-space-200 mui-cell-one">
                     <div className="flex items-center gap-space-200">
