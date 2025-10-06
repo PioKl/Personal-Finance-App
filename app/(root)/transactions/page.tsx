@@ -1,6 +1,6 @@
 //dsa
 "use client";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import clsx from "clsx";
 import data from "@/data/data.json";
 import type { Transactions } from "@/types";
@@ -17,6 +17,8 @@ import {
   MenuItem,
   useMediaQuery,
   createTheme,
+  Stack,
+  Pagination,
 } from "@mui/material";
 import { formatDate, formatAmount } from "@/utils/formattingFunctions";
 import Image from "next/image";
@@ -175,6 +177,26 @@ const Transactions = () => {
     categorySelectOptions,
   ]);
 
+  const [page, setPage] = useState(1);
+  const transactionsPerPage = 10;
+  const handleChangePage = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+  };
+
+  const filteredWithPaginationTransactions = useMemo(() => {
+    const start = (page - 1) * transactionsPerPage;
+    const end = page * transactionsPerPage;
+    return filteredAndSortedTranscations.slice(start, end);
+  }, [page, filteredAndSortedTranscations]);
+
+  //Powrót na pierwszą stronę po wyszukiwaniu, przefiltrowaniu, sortowaniu
+  useEffect(() => {
+    setPage(1);
+  }, [filteredAndSortedTranscations]);
+
   return (
     <section className="grid gap-space-400">
       <div>
@@ -287,7 +309,7 @@ const Transactions = () => {
             </TableHead>
 
             <TableBody>
-              {filteredAndSortedTranscations.map((item, index) => (
+              {filteredWithPaginationTransactions.map((item, index) => (
                 <TableRow key={index}>
                   <TableCell className="!p-space-200 mui-cell-one">
                     <div className="flex items-center gap-space-200">
@@ -334,6 +356,18 @@ const Transactions = () => {
             </TableBody>
           </Table>
         </TableContainer>
+        <Stack className="flex items-center">
+          <Pagination
+            className="mui-pagination"
+            count={Math.ceil(
+              filteredAndSortedTranscations.length / transactionsPerPage
+            )}
+            page={page}
+            onChange={handleChangePage}
+            variant="outlined"
+            shape="rounded"
+          />
+        </Stack>
       </div>
     </section>
   );
