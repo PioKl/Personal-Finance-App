@@ -202,6 +202,10 @@
   .mui-select-mobile .MuiSelect-select {
     @apply !px-space-250 !py-space-150 !flex !items-center !justify-center;
   }
+
+  .mui-pagination ul {
+    @apply !gap-space-100;
+  }
 }
 
 @theme {
