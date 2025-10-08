@@ -56,6 +56,7 @@
   --fill-color-one: var(--grey900);
   --fill-color-two: var(--white);
   --fill-color-three: var(--beige100);
+  --fill-color-pagination: var(--beige500);
 
   --text-color-one: var(--grey900);
   --text-color-two: var(--white);
@@ -63,6 +64,8 @@
 
   --border-color: var(--grey100);
   --border-color-active: var(--grey900);
+  --border-pagination-color: var(--beige500);
+  --border-pagination-color-active: var(--grey900);
 
   --amount-color: var(--green);
   --amount-alt-color: var(--grey900);
@@ -315,10 +318,13 @@
   --color-fill-one: var(--fill-color-one);
   --color-fill-two: var(--fill-color-two);
   --color-fill-three: var(--fill-color-three);
+  --color-fill-pagination: var(--fill-color-pagination);
 
   /* Border colors */
   --border-color-default: var(--border-color);
   --border-color-active: var(--border-color-active);
+  --border-color-pagination: var(--border-pagination-color);
+  --border-color-pagination-active: var(--border-pagination-color-active);
 
   /* Text colors */
   --color-color-one: var(--text-color-one);
