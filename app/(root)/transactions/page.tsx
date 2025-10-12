@@ -1,4 +1,3 @@
-//dsa
 "use client";
 import { useMemo, useState, useEffect } from "react";
 import clsx from "clsx";
@@ -11,14 +10,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   TextField,
   InputAdornment,
   MenuItem,
-  useMediaQuery,
-  createTheme,
-  Stack,
-  Pagination,
 } from "@mui/material";
 import { formatDate, formatAmount } from "@/utils/formattingFunctions";
 import Image from "next/image";
@@ -26,6 +20,8 @@ import IconSearch from "@/assets/icons/icon-search.svg";
 import IconDown from "@/assets/icons/icon-caret-down.svg";
 import IconFilterMobile from "@/assets/icons/icon-filter-mobile.svg";
 import IconSortMobile from "@/assets/icons/icon-sort-mobile.svg";
+import CustomPagination from "@/components/ui/CustomPagination";
+import { useBreakpoint } from "@/utils/breakpoints";
 
 interface RotatingIconProps {
   className?: string;
@@ -109,18 +105,7 @@ const Transactions = () => {
     []
   );
 
-  const theme = createTheme({
-    breakpoints: {
-      values: {
-        xs: 0,
-        sm: 640,
-        md: 768,
-        lg: 1024,
-        xl: 1280,
-      },
-    },
-  });
-  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+  const { isMdUp } = useBreakpoint();
 
   const [searchValue, setSearchValue] = useState("");
   const [sortValue, setSortValue] = useState(sortSelectOptions[0].value);
@@ -356,18 +341,13 @@ const Transactions = () => {
             </TableBody>
           </Table>
         </TableContainer>
-        <Stack className="flex items-center">
-          <Pagination
-            className="mui-pagination"
-            count={Math.ceil(
-              filteredAndSortedTranscations.length / transactionsPerPage
-            )}
-            page={page}
-            onChange={handleChangePage}
-            variant="outlined"
-            shape="rounded"
-          />
-        </Stack>
+        <CustomPagination
+          count={Math.ceil(
+            filteredAndSortedTranscations.length / transactionsPerPage
+          )}
+          page={page}
+          onChange={handleChangePage}
+        />
       </div>
     </section>
   );
