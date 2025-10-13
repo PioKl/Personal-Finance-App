@@ -37,7 +37,9 @@ export default function CustomPagination({
   const beforeLastPage = getPageItem(count - 1); // przedostatnia strona
 
   //poprzednia strona
-  if (prev) renderedPageButtons.push(prev);
+  if (prev) {
+    renderedPageButtons.push(prev);
+  }
   //pierwsza strona
   if (firstPage) {
     renderedPageButtons.push(firstPage);
@@ -54,9 +56,10 @@ export default function CustomPagination({
       disabled: true,
     } as unknown as UsePaginationItem);
   }
-  //aktualna strona (poza 1 i ostatnią)
-  if (currentPage && page > 2 && page < count)
+  //aktualna strona (poza 1, 2 i ostatnią)
+  if (currentPage && page > 2 && page < count) {
     renderedPageButtons.push(currentPage);
+  }
 
   //Trzy kropeczki
   if (page < count - 1) {
@@ -67,16 +70,20 @@ export default function CustomPagination({
     } as unknown as UsePaginationItem);
   }
 
-  //przedostatnia strona (tylko gdy użytkownik jest na ostatniej i przedostatniej)
+  //przedostatnia strona (tylko gdy użytkownik jest na ostatniej)
   if (page === count && count > 3 && beforeLastPage) {
     renderedPageButtons.push(beforeLastPage);
   }
 
   //ostatnia strona
-  if (lastPage && count > 1) renderedPageButtons.push(lastPage);
+  if (lastPage && count > 1) {
+    renderedPageButtons.push(lastPage);
+  }
 
   //następna strona
-  if (next) renderedPageButtons.push(next);
+  if (next) {
+    renderedPageButtons.push(next);
+  }
 
   return (
     <nav>
