@@ -48,7 +48,7 @@ export default function CustomPagination({
   if (secondPage && (page === 1 || page === 2) && count > 2) {
     renderedPageButtons.push(secondPage);
   }
-  //Trzy kropeczki
+  //Trzy kropeczki, od trzeciej strony wzwyż
   if (page >= 3) {
     renderedPageButtons.push({
       type: "start-ellipsis",
@@ -61,7 +61,7 @@ export default function CustomPagination({
     renderedPageButtons.push(currentPage);
   }
 
-  //Trzy kropeczki
+  //Trzy kropeczki, strona musi być mniejsza niż przedostatnia
   if (page < count - 1) {
     renderedPageButtons.push({
       type: "start-ellipsis",
@@ -75,7 +75,7 @@ export default function CustomPagination({
     renderedPageButtons.push(beforeLastPage);
   }
 
-  //ostatnia strona
+  //ostatnia strona, count > 1 jest, żeby nie było duplikatu (firstPage = getPageItem(1))
   if (lastPage && count > 1) {
     renderedPageButtons.push(lastPage);
   }
