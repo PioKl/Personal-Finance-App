@@ -187,7 +187,7 @@ const Transactions = () => {
       <div>
         <h1>Transactions</h1>
       </div>
-      <div className="flex flex-col gap-space-250 py-space-300 px-space-250 bg-fill-two rounded-default md:p-space-400 ">
+      <div className="flex flex-col gap-space-400 py-space-300 px-space-250 bg-fill-two rounded-default md:p-space-400 ">
         <div className="flex justify-between gap-space-300">
           <div>
             <TextField
