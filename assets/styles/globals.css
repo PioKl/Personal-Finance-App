@@ -122,6 +122,9 @@
   .MuiTableCell-root {
     @apply !border-b !border-default !text-preset-5 !tracking-preset-5 !leading-preset-5 !font-preset-5 !text-color-three;
   }
+  .MuiTableRow-root:last-child .MuiTableCell-root {
+    @apply !border-b-0;
+  }
 
   /* Nadpisanie dla indywidualnych komórek */
   .MuiTableCell-root.mui-cell-one {
