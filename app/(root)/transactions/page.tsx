@@ -237,6 +237,8 @@ const Transactions = () => {
                     key={option.value}
                     value={option.value}
                     autoFocus={false}
+                    disableRipple //wyłączenie pojawiania się wypełnienia tła kolorem przy kliknięciu na przycisk
+                    className="!text-preset-4 !tracking-preset-4 !leading-preset-4 !font-preset-4 !text-color-one [&.Mui-selected]:!font-preset-4-bold !border-b-1 !border-default !px-0 !py-space-150 [&.Mui-selected]:!bg-transparent [&.Mui-selected:hover]:!bg-transparent hover:!bg-transparent hover:!font-preset-4-bold focus-within:!bg-transparent focus-within:!font-preset-4-bold"
                   >
                     {option.value}
                   </MenuItem>
@@ -266,7 +268,13 @@ const Transactions = () => {
                 }}
               >
                 {categorySelectOptions.map((option) => (
-                  <MenuItem key={option} value={option} autoFocus={false}>
+                  <MenuItem
+                    key={option}
+                    value={option}
+                    autoFocus={false}
+                    disableRipple //wyłączenie pojawiania się wypełnienia tła kolorem przy kliknięciu na przycisk
+                    className="!text-preset-4 !tracking-preset-4 !leading-preset-4 !font-preset-4 !text-color-one [&.Mui-selected]:!font-preset-4-bold !border-b-1 !border-default !px-0 !py-space-150 [&.Mui-selected]:!bg-transparent [&.Mui-selected:hover]:!bg-transparent hover:!bg-transparent hover:!font-preset-4-bold focus-within:!bg-transparent focus-within:!font-preset-4-bold"
+                  >
                     {option}
                   </MenuItem>
                 ))}
