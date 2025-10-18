@@ -197,6 +197,7 @@
     transform: translate(14px, -9px) scale(0.75) !important;
   }
 
+  /* Związane z selectem, dropdown menu - początek */
   .mui-select .MuiSelect-select {
     @apply !px-space-250 !py-space-150 !text-preset-4 !tracking-preset-4 !leading-preset-4 !font-preset-4;
   }
@@ -209,6 +210,13 @@
     @apply !px-space-250 !py-space-150 !flex !items-center !justify-center;
   }
 
+  .MuiMenu-list {
+    @apply !max-h-[300px] !px-space-250 !pt-0 !pb-space-150; /* np. padding 1rem */
+  }
+  .MuiPaper-root.MuiMenu-paper {
+    @apply !rounded-alt;
+  }
+  /* Związane z selectem, dropdown menu - koniec */
   .mui-pagination ul {
     @apply !gap-space-100;
   }
