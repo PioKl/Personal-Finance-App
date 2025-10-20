@@ -2,7 +2,7 @@ import data from "@/data/data.json";
 import { Balance, Pots, Transactions, Budgets } from "@/types";
 import { priceDollarsFormatting } from "@/utils/formattingFunctions";
 import IconPot from "@/assets/icons/icon-pot.svg";
-import SectionCard from "@/components/overview/SectionCard";
+import SectionCard from "@/components/shared/SectionCard";
 import BudgetChart from "@/components/overview/BudgetChart";
 import RecurringBillItem from "@/components/overview/RecurringBillItem";
 import TransactionsList from "@/components/overview/TransactionsList";
@@ -48,7 +48,12 @@ export default function Home() {
         </div>
         <div className="flex flex-col gap-space-400 xl:flex-row">
           <div className="grid gap-space-400 xl:flex-1">
-            <SectionCard title="Pots" link="/pots" linkLabel="See Details">
+            <SectionCard
+              title="Pots"
+              link="/pots"
+              linkLabel="See Details"
+              variant="default"
+            >
               <div className="flex flex-col gap-space-250 md:flex-row">
                 <div className="flex items-center gap-space-200 py-5 px-4 bg-fill-three rounded-default md:pr-[clamp(1rem,-35rem+45vw,5.5rem)]">
                   <IconPot />
@@ -70,6 +75,7 @@ export default function Home() {
               title="Transactions"
               link="/transactions"
               linkLabel="View All"
+              variant="default"
             >
               <TransactionsList transactions={transactionsSlice} />
             </SectionCard>
@@ -78,8 +84,9 @@ export default function Home() {
             <SectionCard
               className="gap-space-400"
               title="Budgets"
-              link="/budgers"
+              link="/budgets"
               linkLabel="See Details"
+              variant="default"
             >
               <BudgetChart budgets={budgets} />
             </SectionCard>
@@ -89,6 +96,7 @@ export default function Home() {
               title="Recurring Bills"
               link="/recurring-bills"
               linkLabel="See Details"
+              variant="default"
             >
               <ul className="grid gap-space-150">
                 <RecurringBillItem
