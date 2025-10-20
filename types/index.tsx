@@ -47,4 +47,5 @@ export type SectionCard = {
   linkLabel: string;
   children: React.ReactNode;
   className?: string;
+  variant: "default" | "budgets";
 };
