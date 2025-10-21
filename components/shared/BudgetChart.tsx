@@ -61,7 +61,9 @@ export default function BudgetChart({ budgets, variant }: BudgetChartProps) {
           </div>
         </div>
       </div>
-      <div className="grid gap-space-300">
+      <div
+        className={`grid gap-space-300 ${variant === "budgets" && "w-full"}`}
+      >
         {variant === "budgets" && <h2>Spending Summary</h2>}
         <ul
           className={`grid grid-cols-${
