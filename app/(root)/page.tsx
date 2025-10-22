@@ -3,7 +3,7 @@ import { Balance, Pots, Transactions, Budgets } from "@/types";
 import { priceDollarsFormatting } from "@/utils/formattingFunctions";
 import IconPot from "@/assets/icons/icon-pot.svg";
 import SectionCard from "@/components/shared/SectionCard";
-import BudgetChart from "@/components/overview/BudgetChart";
+import BudgetChart from "@/components/shared/BudgetChart";
 import RecurringBillItem from "@/components/overview/RecurringBillItem";
 import TransactionsList from "@/components/overview/TransactionsList";
 import PotsList from "@/components/overview/PotsList";
