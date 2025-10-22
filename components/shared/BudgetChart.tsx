@@ -36,18 +36,18 @@ export default function BudgetChart({ budgets, variant }: BudgetChartProps) {
 
   return (
     <div
-      className={`flex flex-col gap-space-250 ${
-        variant === "budgets" && "md:items-center"
+      className={`flex flex-col ${
+        variant === "budgets" ? "gap-13 md:items-center" : "gap-space-250"
       } md:flex-row xl:flex-row`}
     >
       <div
         className={`relative ${
           variant === "budgets"
             ? "mx-auto md:ml-7 md:mr-15"
-            : "justify-items-center md:ml-auto"
+            : "justify-items-center md:mx-auto"
         }`}
       >
-        <div className="w-[240px] h-[240px] pointer-events-none">
+        <div className={`w-[240px] h-[240px] pointer-events-none`}>
           <div className="pointer-events-auto">
             <Doughnut data={chartData} options={options} />
           </div>
@@ -68,10 +68,16 @@ export default function BudgetChart({ budgets, variant }: BudgetChartProps) {
         <ul
           className={`grid grid-cols-${
             variant === "budgets" ? "1" : "2 md:ml-auto"
-          } gap-space-200 md:grid-cols-1 xl:grid-cols-1 xl:ml-auto`}
+          } gap-space-200 md:grid-cols-1 xl:grid-cols-1`}
         >
           {budgets.map((item, index) => (
-            <li key={index} className="flex gap-space-200">
+            <li
+              key={index}
+              className={`flex gap-space-200 ${
+                variant === "budgets" &&
+                "pb-4 border-b border-default last:border-b-0"
+              }`}
+            >
               <span
                 className="w-1 rounded-default"
                 style={{ backgroundColor: item.theme }}
