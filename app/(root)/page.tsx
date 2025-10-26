@@ -88,7 +88,7 @@ export default function Home() {
               linkLabel="See Details"
               variant="default"
             >
-              <BudgetChart budgets={budgets} />
+              <BudgetChart budgets={budgets} variant="default" />
             </SectionCard>
 
             <SectionCard
