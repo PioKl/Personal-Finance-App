@@ -1,7 +1,11 @@
 //Dollar Format
 
-export const priceDollarsFormatting = (price: number): string => {
-  return price.toLocaleString("en-US", {
+export const priceDollarsFormatting = (
+  price: number,
+  removeMinus: boolean = false
+): string => {
+  const value = removeMinus ? Math.abs(price) : price;
+  return value.toLocaleString("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
