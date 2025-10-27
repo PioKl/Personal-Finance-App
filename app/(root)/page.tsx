@@ -13,11 +13,11 @@ export const metadata = {
 };
 
 export default function Home() {
-  //const { balance, pots } = data as { balance: Balance; pots: Pots[] };
-  const { balance } = data as { balance: Balance };
-  const { pots } = data as { pots: Pots[] };
+  const { balance, pots } = data as { balance: Balance; pots: Pots[] };
   const { transactions } = data as { transactions: Transactions[] };
-  const { budgets } = data as { budgets: Budgets[] };
+  /* Rzutowanie przez "unknown", żeby TS pozwolił bezpiecznie określić strukturę.
+  Dane JSON nie mają przypisanego pola _type dlatego unknown*/
+  const { budgets } = data as unknown as { budgets: Budgets[] };
   const potsSlice = pots.slice(0, 4);
   const transactionsSlice = transactions.slice(0, 5);
 
