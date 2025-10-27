@@ -1,18 +1,50 @@
 "use client";
 import { priceDollarsFormatting } from "@/utils/formattingFunctions";
 import { Budgets } from "@/types";
+import { BudgetsWithTransactions } from "@/interfaces";
 import { Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
 
-type BudgetChartProps = {
-  budgets: Budgets[];
-  variant?: "default" | "budgets";
-};
+type BudgetChartProps =
+  | {
+      variant: "default";
+      budgets: Budgets[];
+      budgetsWithTransactions?: never;
+    }
+  | {
+      variant: "budgets";
+      budgetsWithTransactions: BudgetsWithTransactions[]; //transakcje wbudowane w "budgets"
+      budgets?: never;
+    };
 
-export default function BudgetChart({ budgets, variant }: BudgetChartProps) {
-  const budgetsLabels = budgets.map((item) => item.category);
-  const budgetsMaximum = budgets.map((item) => item.maximum);
-  const budgetsTheme = budgets.map((item) => item.theme);
+export default function BudgetChart(props: BudgetChartProps) {
+  const { variant } = props;
+
+  let budgetsLabels: string[];
+  let budgetsMaximum: number[];
+  let budgetsTheme: string[];
+  let budgetsItems: (Budgets | BudgetsWithTransactions)[] = [];
+  let budgetsAmount: number[] = [];
+
+  if (variant === "budgets") {
+    const { budgetsWithTransactions } = props;
+    budgetsLabels = budgetsWithTransactions.map((b) => b.category);
+    budgetsMaximum = budgetsWithTransactions.map((b) => b.maximum);
+    budgetsTheme = budgetsWithTransactions.map((b) => b.theme);
+    budgetsItems = budgetsWithTransactions;
+    budgetsAmount = budgetsWithTransactions.map((budget) =>
+      budget.transactions.reduce(
+        (sum, transaction) => sum + transaction.amount,
+        0
+      )
+    );
+  } else {
+    const { budgets } = props;
+    budgetsLabels = budgets.map((b) => b.category);
+    budgetsMaximum = budgets.map((b) => b.maximum);
+    budgetsTheme = budgets.map((b) => b.theme);
+    budgetsItems = budgets;
+  }
 
   const chartData = {
     labels: budgetsLabels,
@@ -70,7 +102,7 @@ export default function BudgetChart({ budgets, variant }: BudgetChartProps) {
             variant === "budgets" ? "1" : "2 md:ml-auto"
           } gap-space-200 md:grid-cols-1 xl:grid-cols-1`}
         >
-          {budgets.map((item, index) => (
+          {budgetsItems.map((item, index) => (
             <li
               key={index}
               className={`flex gap-space-200 ${
@@ -79,24 +111,39 @@ export default function BudgetChart({ budgets, variant }: BudgetChartProps) {
               }`}
             >
               <span
-                className="w-1 rounded-default"
+                className={`${
+                  variant === "budgets" && "min-w-1"
+                } w-1 rounded-default`}
                 style={{ backgroundColor: item.theme }}
               />
               <div
                 className={`${
-                  variant === "budgets" ? "flex w-full" : "grid"
+                  variant === "budgets" ? "flex w-full items-center" : "grid"
                 } gap-space-50`}
               >
                 <span className="text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5 text-color-three">
                   {item.category}
                 </span>
-                <span
+                <div
                   className={`${
-                    variant === "budgets" && "ml-auto"
-                  } text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4-bold text-color-one`}
+                    variant === "budgets" &&
+                    "flex items-center gap-space-100 ml-auto justify-end flex-wrap"
+                  }`}
                 >
-                  ${priceDollarsFormatting(item.maximum)}
-                </span>
+                  <span
+                    className={`text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4-bold text-color-one`}
+                  >
+                    {variant === "budgets"
+                      ? `$${priceDollarsFormatting(budgetsAmount[index], true)}`
+                      : `$${priceDollarsFormatting(item.maximum)}`}
+                  </span>
+                  {variant === "budgets" && (
+                    <div className="flex gap-space-50 text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5 text-color-three">
+                      <span>of</span>
+                      <span>${priceDollarsFormatting(item.maximum)}</span>
+                    </div>
+                  )}
+                </div>
               </div>
             </li>
           ))}
