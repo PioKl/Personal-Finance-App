@@ -28,6 +28,7 @@ export type Transactions = {
 };
 
 export type Budgets = {
+  _type: "Budgets"; //używane do rozróżnienia typów w unionach
   category: string;
   maximum: number;
   theme: string;
