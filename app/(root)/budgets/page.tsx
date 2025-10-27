@@ -2,8 +2,38 @@ import data from "@/data/data.json";
 import { Budgets as BudgetsType } from "@/types";
 import BudgetChart from "@/components/shared/BudgetChart";
 import SectionCard from "@/components/shared/SectionCard";
+import type { Transactions } from "@/types";
+import { BudgetsWithTransactions } from "@/interfaces";
 const Budgets = () => {
-  const { budgets } = data as { budgets: BudgetsType[] };
+  /* Rzutowanie przez `unknown`, żeby TS pozwolił bezpiecznie określić strukturę.
+  Dane JSON nie mają przypisanego pola _type dlatego unknown*/
+  const { budgets } = data as unknown as { budgets: BudgetsType[] };
+  //Alternatywa
+  /* 
+  const budgets: BudgetsType[] = data.budgets.map((budget) => ({
+  _type: "Budgets",
+  ...budget,
+}));
+  */
+  const { transactions } = data as { transactions: Transactions[] };
+
+  //Kategoria jest identyczna w budżecie i transakcji i wszystkie transakcje o takiej samej kategorii są teraz w jednej tablicy
+  const transactionsByCategory: BudgetsWithTransactions[] = budgets.map(
+    (budget) => ({
+      /*        W tym momencie każdy element MUSI mieć _type, ponieważ interfejs
+       BudgetsWithTransactions wymaga go (to nie jest opcjonalne pole).
+       Dzięki temu TypeScript dokładnie wie, z jakim typem ma do czynienia
+       w momencie przekazywania danych np. do komponentu BudgetChart. */
+      _type: "BudgetsWithTransactions", //potrzebne, bo inaczej TS zgłosi brak wymaganego pola
+      category: budget.category,
+      maximum: budget.maximum,
+      theme: budget.theme,
+      transactions: transactions.filter(
+        (transaction) => transaction.category === budget.category
+      ),
+    })
+  );
+
   return (
     <section className="grid gap-space-400">
       <div>
@@ -17,7 +47,10 @@ const Budgets = () => {
           linkLabel="See Details"
           variant="budgets"
         >
-          <BudgetChart budgets={budgets} variant="budgets" />
+          <BudgetChart
+            budgetsWithTransactions={transactionsByCategory}
+            variant="budgets"
+          />
         </SectionCard>
       </div>
     </section>
