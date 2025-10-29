@@ -23,6 +23,11 @@ export interface StandardButton<T> extends Button<T> {
 
 //Omit<Budgets, "_type">, żeby odziedziczyć wszystkie pola oprócz _type
 export interface BudgetsWithTransactions extends Omit<Budgets, "_type"> {
-  _type: "BudgetsWithTransactions"; //używane do rozróżnienia typów w unionach
   transactions: Transactions[];
+}
+
+//Omit<Budgets, "_type">, żeby odziedziczyć wszystkie pola oprócz _type
+export interface BudgetsWithTransactionsAmounts extends Omit<Budgets, "_type"> {
+  _type: "BudgetsWithTransactionsAmounts"; //używane do rozróżnienia typów w unionach
+  transactions: { amount: number }[];
 }
