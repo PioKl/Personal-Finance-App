@@ -1,7 +1,7 @@
 "use client";
 import { priceDollarsFormatting } from "@/utils/formattingFunctions";
 import { Budgets } from "@/types";
-import { BudgetsWithTransactionsAmounts } from "@/interfaces";
+import { BudgetWithTransactionsAmounts } from "@/interfaces";
 import { Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
 
@@ -13,7 +13,7 @@ type BudgetChartProps =
     }
   | {
       variant: "budgets";
-      budgetsWithTransactions: BudgetsWithTransactionsAmounts[]; //transakcje wbudowane w "budgets", a dokładnie same amount w tym przypadku
+      budgetsWithTransactions: BudgetWithTransactionsAmounts[]; //transakcje wbudowane w "budgets", a dokładnie same amount w tym przypadku
       budgets?: never;
     };
 
@@ -23,7 +23,7 @@ export default function BudgetChart(props: BudgetChartProps) {
   let budgetsLabels: string[];
   let budgetsMaximum: number[];
   let budgetsTheme: string[];
-  let budgetsItems: (Budgets | BudgetsWithTransactionsAmounts)[] = [];
+  let budgetsItems: (Budgets | BudgetWithTransactionsAmounts)[] = [];
   let budgetsAmount: number[] = [];
 
   if (variant === "budgets") {

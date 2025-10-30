@@ -4,8 +4,8 @@ import BudgetChart from "@/components/shared/BudgetChart";
 import SectionCard from "@/components/shared/SectionCard";
 import type { Transactions } from "@/types";
 import {
-  BudgetsWithTransactions,
-  BudgetsWithTransactionsAmounts,
+  BudgetWithTransactions,
+  BudgetWithTransactionsAmounts,
 } from "@/interfaces";
 import CategoryBudgets from "@/components/budgets/CategoryBudgets";
 const Budgets = () => {
@@ -22,7 +22,7 @@ const Budgets = () => {
   const { transactions } = data as { transactions: Transactions[] };
 
   //Kategoria jest identyczna w budżecie i transakcji i wszystkie transakcje o takiej samej kategorii są teraz w jednej tablicy
-  const transactionsByCategory: BudgetsWithTransactions[] = budgets.map(
+  const transactionsByCategory: BudgetWithTransactions[] = budgets.map(
     (budget) => ({
       category: budget.category,
       maximum: budget.maximum,
@@ -34,7 +34,7 @@ const Budgets = () => {
   );
 
   //Kategoria jest identyczna w budżecie i transakcji i wszystkie transakcje o takiej samej kategorii są teraz w jednej tablicy (w tym przypadku z transakcji jest tylko zabierane amount, reszta będzie niepotrzebna)
-  const budgetsWithTransactionsAmounts: BudgetsWithTransactionsAmounts[] =
+  const budgetsWithTransactionsAmounts: BudgetWithTransactionsAmounts[] =
     budgets.map((budget) => ({
       /*W tym momencie każdy element MUSI mieć _type, ponieważ interfejs
        BudgetsWithTransactionsAmounts wymaga go (to nie jest opcjonalne pole).
