@@ -7,6 +7,7 @@ import {
   BudgetsWithTransactions,
   BudgetsWithTransactionsAmounts,
 } from "@/interfaces";
+import CategoryBudgets from "@/components/budgets/CategoryBudgets";
 const Budgets = () => {
   /* Rzutowanie przez `unknown`, żeby TS pozwolił bezpiecznie określić strukturę.
   Dane JSON nie mają przypisanego pola _type dlatego unknown*/
@@ -65,6 +66,7 @@ const Budgets = () => {
             budgetsWithTransactions={budgetsWithTransactionsAmounts}
             variant="budgets"
           />
+          <CategoryBudgets categoryBudgets={transactionsByCategory} />
         </SectionCard>
       </div>
     </section>
