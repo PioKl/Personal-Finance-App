@@ -31,3 +31,7 @@ export interface BudgetsWithTransactionsAmounts extends Omit<Budgets, "_type"> {
   _type: "BudgetsWithTransactionsAmounts"; //używane do rozróżnienia typów w unionach
   transactions: { amount: number }[];
 }
+
+export interface CategoryBudgetsInterface {
+  categoryBudgets: BudgetsWithTransactions[];
+}
