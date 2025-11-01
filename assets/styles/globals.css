@@ -66,6 +66,7 @@
   --border-color-active: var(--grey900);
   --border-pagination-color: var(--beige500);
   --border-pagination-color-active: var(--grey900);
+  --border-color-alt: var(--grey500);
 
   --amount-color: var(--green);
   --amount-alt-color: var(--grey900);
@@ -301,6 +302,7 @@
   --radius-menu-mobile: 8px;
   --radius-default: 12px;
   --radius-alt: 8px;
+  --radius-small: 4px;
 }
 
 @theme inline {
@@ -336,6 +338,7 @@
   --border-color-active: var(--border-color-active);
   --border-color-pagination: var(--border-pagination-color);
   --border-color-pagination-active: var(--border-pagination-color-active);
+  --border-color-alt: var(--border-color-alt);
 
   /* Text colors */
   --color-color-one: var(--text-color-one);
