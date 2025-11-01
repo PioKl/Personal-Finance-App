@@ -54,9 +54,9 @@ const Budgets = () => {
       <div>
         <h1>Budgets</h1>
       </div>
-      <div>
+      <div className="flex flex-col gap-space-300 2xl:flex-row">
         <SectionCard
-          className="gap-space-400"
+          className="gap-space-400 h-fit"
           title="Budgets"
           link="/budgets"
           linkLabel="See Details"
@@ -66,8 +66,9 @@ const Budgets = () => {
             budgetsWithTransactions={budgetsWithTransactionsAmounts}
             variant="budgets"
           />
-          <CategoryBudgets categoryBudgets={transactionsByCategory} />
         </SectionCard>
+
+        <CategoryBudgets categoryBudgets={transactionsByCategory} />
       </div>
     </section>
   );
