@@ -6,7 +6,7 @@ export default function CategoryBudgets({
   categoryBudgets,
 }: CategoryBudgetsInterface) {
   return (
-    <>
+    <div className="flex flex-col flex-1 gap-space-300">
       {categoryBudgets.map((item, index) => (
         <CategoryBudget
           key={index}
@@ -16,6 +16,6 @@ export default function CategoryBudgets({
           transactions={item.transactions}
         />
       ))}
-    </>
+    </div>
   );
 }
