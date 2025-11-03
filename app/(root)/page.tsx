@@ -5,7 +5,8 @@ import IconPot from "@/assets/icons/icon-pot.svg";
 import SectionCard from "@/components/shared/SectionCard";
 import BudgetChart from "@/components/shared/BudgetChart";
 import RecurringBillItem from "@/components/overview/RecurringBillItem";
-import TransactionsList from "@/components/overview/TransactionsList";
+//import TransactionsList from "@/components/overview/TransactionsList";
+import TransactionsList from "@/components/shared/TransactionsList";
 import PotsList from "@/components/overview/PotsList";
 
 export const metadata = {
@@ -77,7 +78,7 @@ export default function Home() {
               linkLabel="View All"
               variant="default"
             >
-              <TransactionsList transactions={transactionsSlice} />
+              <TransactionsList data={transactionsSlice} variant="overview" />
             </SectionCard>
           </div>
           <div className="grid gap-space-400">
