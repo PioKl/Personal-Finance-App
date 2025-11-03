@@ -88,7 +88,7 @@ export default function CategoryBudget({
             <IconCaretRight />
           </Button>
         </div>
-        <TransactionsList transactions={transactions} variant="budgets" />
+        <TransactionsList data={transactions} variant="budgets" />
       </div>
     </div>
   );
