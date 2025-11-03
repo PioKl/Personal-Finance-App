@@ -35,3 +35,10 @@ export interface BudgetWithTransactionsAmounts extends Omit<Budgets, "_type"> {
 export interface CategoryBudgetsInterface {
   categoryBudgets: BudgetWithTransactions[];
 }
+
+export interface TransactionWithVariant<
+  T extends Transactions | Transactions[]
+> {
+  data: T;
+  variant: "overview" | "budgets";
+}
