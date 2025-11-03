@@ -1,18 +1,13 @@
 import { Transactions } from "@/types";
+import { TransactionWithVariant } from "@/interfaces";
 import Image from "next/image";
 import { formatAmount, formatDate } from "@/utils/formattingFunctions";
 
-type TransactionItemProps = Transactions & {
-  variant: "overview" | "budgets";
-};
-
 export default function TransactionItem({
-  avatar,
-  name,
-  amount,
-  date,
+  data: transaction,
   variant,
-}: TransactionItemProps) {
+}: TransactionWithVariant<Transactions>) {
+  const { avatar, name, amount, date } = transaction;
   return (
     <li
       className={`flex justify-between pb-space-250 border-b-1 last:border-none ${
