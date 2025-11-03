@@ -1,19 +1,15 @@
 import { Transactions } from "@/types";
+import { TransactionWithVariant } from "@/interfaces";
 import TransactionItem from "./TransactionItem";
 
-type TransactionsListProps = {
-  transactions: Transactions[];
-  variant: "overview" | "budgets";
-};
-
 export default function TransactionsList({
-  transactions,
+  data: transactions,
   variant,
-}: TransactionsListProps) {
+}: TransactionWithVariant<Transactions[]>) {
   return (
     <ul className="grid gap-space-250">
-      {transactions.map((item, i) => (
-        <TransactionItem key={i} {...item} variant={variant} />
+      {transactions.map((transaction, i) => (
+        <TransactionItem key={i} data={transaction} variant={variant} />
       ))}
     </ul>
   );
