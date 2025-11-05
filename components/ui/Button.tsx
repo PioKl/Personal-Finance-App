@@ -17,7 +17,8 @@ const Button = <T,>({
     string
   > = {
     //Standard Button
-    primary: "",
+    primary:
+      "p-space-200 rounded-alt bg-fill-one text-fill-two text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4-bold hover:bg-fill-pagination focus-visible:border-primary-button-active focus-visible:bg-fill-pagination focus-visible:outline-none",
     secondary: "",
     tertiary: "",
     destroy: "",
