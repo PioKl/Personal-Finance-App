@@ -67,6 +67,7 @@
   --border-pagination-color: var(--beige500);
   --border-pagination-color-active: var(--grey900);
   --border-color-alt: var(--grey500);
+  --border-primary-color-button-active: var(--beige100);
 
   --amount-color: var(--green);
   --amount-alt-color: var(--grey900);
@@ -339,6 +340,9 @@
   --border-color-pagination: var(--border-pagination-color);
   --border-color-pagination-active: var(--border-pagination-color-active);
   --border-color-alt: var(--border-color-alt);
+  --border-color-primary-button-active: var(
+    --border-primary-color-button-active
+  );
 
   /* Text colors */
   --color-color-one: var(--text-color-one);
