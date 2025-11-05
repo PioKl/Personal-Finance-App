@@ -8,6 +8,7 @@ import {
   BudgetWithTransactionsAmounts,
 } from "@/interfaces";
 import CategoryBudgets from "@/components/budgets/CategoryBudgets";
+import Button from "@/components/ui/Button";
 const Budgets = () => {
   /* Rzutowanie przez `unknown`, żeby TS pozwolił bezpiecznie określić strukturę.
   Dane JSON nie mają przypisanego pola _type dlatego unknown*/
@@ -51,8 +52,15 @@ const Budgets = () => {
 
   return (
     <section className="grid gap-space-400">
-      <div>
+      <div className="flex items-center justify-between">
         <h1>Budgets</h1>
+        <Button
+          variant="primary"
+          isALink={false}
+          className="flex items-center gap-space-150"
+        >
+          + Add New Budget
+        </Button>
       </div>
       <div className="flex flex-col gap-space-300 2xl:flex-row">
         <SectionCard
