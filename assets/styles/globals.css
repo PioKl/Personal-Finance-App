@@ -117,6 +117,9 @@
   .custom-transition-width {
     @apply transition-[width] duration-400;
   }
+  .custom-shadow {
+    @apply shadow-[0_4px_24px_0_rgba(0,0,0,0.25)];
+  }
 }
 
 /* Mui style dla komórek */
@@ -348,6 +351,7 @@
   --color-color-one: var(--text-color-one);
   --color-color-two: var(--text-color-two);
   --color-color-three: var(--text-color-three);
+  --color-color-red: var(--red);
 
   /* Color Link */
   --color-link: var(--link-color);
