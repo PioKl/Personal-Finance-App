@@ -1,6 +1,6 @@
 import React from "react";
 import { BudgetWithTransactions } from "@/interfaces";
-import IconEllipsis from "@/assets/icons/icon-ellipsis.svg";
+import Dropdown from "../shared/Dropdown";
 import IconCaretRight from "@/assets/icons/icon-caret-right.svg";
 import { priceDollarsFormatting } from "@/utils/formattingFunctions";
 import Button from "../ui/Button";
@@ -35,9 +35,7 @@ export default function CategoryBudget({
         >
           {category}
         </h2>
-        <button>
-          <IconEllipsis />
-        </button>
+        <Dropdown>Budget</Dropdown>
       </div>
       <div className="grid gap-space-200">
         <span className="text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4 text-color-three">
