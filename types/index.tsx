@@ -53,5 +53,6 @@ export type SectionCard = {
 
 //Dropdown
 export type Dropdown = {
+  category: string;
   children: React.ReactNode;
 };
