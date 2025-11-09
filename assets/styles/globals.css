@@ -57,6 +57,7 @@
   --fill-color-two: var(--white);
   --fill-color-three: var(--beige100);
   --fill-color-pagination: var(--beige500);
+  --fill-color-four: var(--red);
 
   --text-color-one: var(--grey900);
   --text-color-two: var(--white);
@@ -119,6 +120,9 @@
   }
   .custom-shadow {
     @apply shadow-[0_4px_24px_0_rgba(0,0,0,0.25)];
+  }
+  .custom-shadow-modal {
+    @apply shadow-[0_4px_24px_0_rgba(0,0,0,0.05)];
   }
 }
 
@@ -336,6 +340,7 @@
   --color-fill-two: var(--fill-color-two);
   --color-fill-three: var(--fill-color-three);
   --color-fill-pagination: var(--fill-color-pagination);
+  --color-fill-four: var(--fill-color-four);
 
   /* Border colors */
   --border-color-default: var(--border-color);
