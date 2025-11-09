@@ -50,3 +50,8 @@ export type SectionCard = {
   className?: string;
   variant: "default" | "budgets";
 };
+
+//Dropdown
+export type Dropdown = {
+  children: React.ReactNode;
+};
