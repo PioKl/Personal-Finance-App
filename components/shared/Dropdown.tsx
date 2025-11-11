@@ -1,11 +1,15 @@
 "use client";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import IconEllipsis from "@/assets/icons/icon-ellipsis.svg";
 import type { Dropdown } from "@/types";
+import DeleteModal from "../modals/DeleteModal";
 
-export default function Dropdown({ children }: Dropdown) {
+export default function Dropdown({ category, children }: Dropdown) {
   const dropDownMenuRef = useRef<HTMLUListElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
   const handleDropDownButton = () => {
     if (dropDownMenuRef.current) {
       dropDownMenuRef.current.classList.toggle("hidden");
@@ -54,9 +58,21 @@ export default function Dropdown({ children }: Dropdown) {
           <button className="text-color-one">Edit {children}</button>
         </li>
         <li>
-          <button className="text-color-red">Delete {children}</button>
+          <button
+            className="text-color-red"
+            onClick={() => {
+              setOpenDeleteModal(true);
+            }}
+          >
+            Delete {children}
+          </button>
         </li>
       </ul>
+      <DeleteModal
+        category={category}
+        open={openDeleteModal}
+        onClose={() => setOpenDeleteModal(false)}
+      />
     </div>
   );
 }
