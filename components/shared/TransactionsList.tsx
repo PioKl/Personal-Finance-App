@@ -8,9 +8,11 @@ export default function TransactionsList({
 }: TransactionWithVariant<Transactions[]>) {
   return (
     <ul className="grid gap-space-250">
-      {transactions.map((transaction, i) => (
-        <TransactionItem key={i} data={transaction} variant={variant} />
-      ))}
+      {(variant === "budgets" ? transactions.slice(0, 3) : transactions).map(
+        (transaction, i) => (
+          <TransactionItem key={i} data={transaction} variant={variant} />
+        )
+      )}
     </ul>
   );
 }
