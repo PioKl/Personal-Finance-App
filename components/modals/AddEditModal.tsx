@@ -1,0 +1,234 @@
+import { useState } from "react";
+import { AddEditModal as AddEditModalType } from "@/types";
+import { Modal, Box, TextField, MenuItem } from "@mui/material";
+import FormControl from "@mui/material/FormControl";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconCloseModal from "@/assets/icons/icon-close-modal.svg";
+import IconDown from "@/assets/icons/icon-caret-down.svg";
+import clsx from "clsx";
+import data from "@/data/data.json";
+interface RotatingIconProps {
+  className?: string;
+}
+export default function AddEditModal({
+  open,
+  onClose,
+  category,
+  message,
+  variant,
+}: AddEditModalType) {
+  const RotatingIcon = ({ className, ...other }: RotatingIconProps) => {
+    return (
+      <IconDown
+        {...other} // obsługuje kliknięcie selecta i dostępność
+        className={`!top-[45%] !right-[16px] transition-transform duration-200 ${className}`}
+      />
+    );
+  };
+
+  const sortSelectOptions = data.budgets.map((item) => item.category);
+  const [sortValue, setSortValue] = useState(sortSelectOptions[0]);
+  const handleSortBy = (value: string) => {
+    setSortValue(value);
+  };
+
+  const usedThemes = data.budgets.map((item) => item.theme);
+
+  const themeSelectOptions = [
+    { id: 0, theme: "#277C78", value: "Green" },
+    { id: 1, theme: "#82C9D7", value: "Cyan" },
+    { id: 2, theme: "#F2CDAC", value: "Yellow" },
+    { id: 3, theme: "#626070", value: "Navy" },
+    { id: 4, theme: "#000000", value: "Black" },
+    { id: 5, theme: "#c94736", value: "Red" },
+  ];
+  //Domyślny, żeby nie był już użytym theme
+  const defaultThemeOption =
+    themeSelectOptions.find((item) => !usedThemes.includes(item.theme)) ||
+    themeSelectOptions[0]; //te lub jest po to, że jak już wszystkie są użyte
+
+  const [themeSelectValue, setThemeSelecValue] = useState(
+    defaultThemeOption.value
+  );
+  const handleSortByTheme = (value: string) => {
+    setThemeSelecValue(value);
+  };
+
+  return (
+    <Modal
+      open={open}
+      onClose={onClose}
+      aria-labelledby="modal-title"
+      aria-describedby="modal-description"
+    >
+      <Box className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 grid gap-space-250 min-w-[335px] px-space-250 py-space-300 custom-shadow-modal bg-fill-two rounded-default md:max-w-[560px] md:p-space-400">
+        <div className="flex items-center justify-between">
+          <h1
+            id="modal-title"
+            /* nadpisanie domyślnych stylów dla h1, które są zdefiniowane w typography */
+            className="!text-preset-2 !tracking-preset-2 !leading-preset-2 md:!text-preset-1 md:!tracking-preset-1 md:!leading-preset-1"
+          >
+            {variant === "add" ? `Add New ${category}` : `Edit ${category}`}
+          </h1>
+          <button onClick={onClose}>
+            <IconCloseModal />
+          </button>
+        </div>
+
+        <p
+          id="modal-description"
+          className="text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4 text-color-three"
+        >
+          {message}
+        </p>
+        <ul className="grid gap-space-250 text-center">
+          <li>
+            <div className="flex flex-col items-start gap-space-100">
+              <span className="flex text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5-bold text-color-three whitespace-nowrap">
+                Budget category
+              </span>
+              <TextField
+                select
+                defaultValue={sortSelectOptions[0]}
+                value={sortValue}
+                onChange={(e) => {
+                  handleSortBy(e.target.value);
+                }}
+                className={clsx("mui-select", "w-full", "text-left")}
+                slotProps={{
+                  select: {
+                    IconComponent: RotatingIcon,
+                    renderValue: () => sortValue,
+                  },
+                }}
+              >
+                {sortSelectOptions.map((option) => (
+                  <MenuItem
+                    key={option}
+                    value={option}
+                    autoFocus={false}
+                    disableRipple //wyłączenie pojawiania się wypełnienia tła kolorem przy kliknięciu na przycisk
+                    className="!text-preset-4 !tracking-preset-4 !leading-preset-4 !font-preset-4 !text-color-one [&.Mui-selected]:!font-preset-4d !border-b-1 !border-default !px-0 !py-space-150 [&.Mui-selected]:!bg-transparent [&.Mui-selected:hover]:!bg-transparent hover:!bg-transparent hover:!font-preset-4-bold focus-within:!bg-transparent focus-within:!font-preset-4-bold"
+                  >
+                    {option}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
+          </li>
+          <li>
+            <div className="flex flex-col items-start gap-space-100">
+              <span className="flex text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5-bold text-color-three whitespace-nowrap">
+                Maximum Spending
+              </span>
+              <FormControl className={clsx("mui-select w-full text-left")}>
+                <OutlinedInput
+                  placeholder="e.g. 2000"
+                  label="" // ← konieczne, żeby placeholder był widoczny
+                  classes={{
+                    input:
+                      "!py-space-150 !text-preset-4 !tracking-preset-4 !leading-preset-4 !font-preset-4", // ← padding inputa
+                  }}
+                  sx={{
+                    "& input::placeholder": {
+                      color: "#98908b", // kolor placeholdera
+                      opacity: 1,
+                    },
+                  }}
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <span className="text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4 text-input-placeholder">
+                        $
+                      </span>
+                    </InputAdornment>
+                  }
+                  notched={false}
+                />
+              </FormControl>
+            </div>
+          </li>
+          <li>
+            <div className="flex flex-col items-start gap-space-100">
+              <span className="flex text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5-bold text-color-three whitespace-nowrap">
+                Color Tag
+              </span>
+              <TextField
+                select
+                value={themeSelectValue}
+                onChange={(e) => {
+                  handleSortByTheme(e.target.value);
+                }}
+                className={clsx("mui-select", "w-full", "text-left")}
+                slotProps={{
+                  select: {
+                    IconComponent: RotatingIcon,
+                    renderValue: (selected) => {
+                      const selectedValue = selected as string; // rzutowanie na string
+                      const selectedOption = themeSelectOptions.find(
+                        (opt) => opt.value === selectedValue
+                      );
+
+                      return (
+                        <div className="flex items-center gap-space-150">
+                          {selectedOption && (
+                            <span
+                              className="w-4 h-4 rounded-full"
+                              style={{ backgroundColor: selectedOption.theme }}
+                            />
+                          )}
+                          <span>{selectedValue}</span>
+                        </div>
+                      );
+                    },
+                  },
+                }}
+              >
+                {themeSelectOptions.map((option) => {
+                  const isColorUsed = usedThemes.includes(option.theme); //w celu sprawdzenia, czy kolor jest już użyty
+                  return (
+                    <MenuItem
+                      key={option.id}
+                      value={option.value}
+                      autoFocus={false}
+                      disabled={isColorUsed} //brak możliwości kliknięcia jeśli kolor już użyty
+                      disableRipple //wyłączenie pojawiania się wypełnienia tła kolorem przy kliknięciu na przycisk
+                      className="!text-preset-4 !tracking-preset-4 !leading-preset-4 !font-preset-4 !text-color-one [&.Mui-selected]:!font-preset-4d !border-b-1 !border-default !px-0 !py-space-150 [&.Mui-selected]:!bg-transparent [&.Mui-selected:hover]:!bg-transparent hover:!bg-transparent hover:!font-preset-4-bold focus-within:!bg-transparent focus-within:!font-preset-4-bold"
+                    >
+                      <div className="flex flex-1 items-center gap-space-150">
+                        <span
+                          className="w-4 h-4 rounded-full"
+                          style={{ backgroundColor: option.theme }}
+                        />
+                        <span
+                          className={`${
+                            isColorUsed ? "text-color-three" : "text-color-one"
+                          }`}
+                        >
+                          {option.value}
+                        </span>
+                        {isColorUsed && (
+                          <span className="ml-auto text-color-three">
+                            Already Used
+                          </span>
+                        )}
+                      </div>
+                    </MenuItem>
+                  );
+                })}
+              </TextField>
+            </div>
+          </li>
+          <li>
+            <button
+              className="w-full p-space-200 text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4-bold bg-fill-one text-color-two rounded-alt"
+              /* onClick={variant === "add" ? handleAddBudget : handleSaveChanges} */
+            >
+              {variant === "add" ? "Add Budget" : "Save Changes"}
+            </button>
+          </li>
+        </ul>
+      </Box>
+    </Modal>
+  );
+}
