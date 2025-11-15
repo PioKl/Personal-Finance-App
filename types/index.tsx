@@ -56,3 +56,17 @@ export type Dropdown = {
   category: string;
   children: React.ReactNode;
 };
+
+export type DeleteModal = {
+  category: string;
+  open: boolean;
+  onClose: () => void;
+};
+
+export type AddEditModal = {
+  open: boolean;
+  onClose: () => void;
+  category: string;
+  message: string;
+  variant: "add" | "edit";
+};
