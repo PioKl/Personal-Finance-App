@@ -2,12 +2,14 @@
 import { useRef, useEffect, useState } from "react";
 import IconEllipsis from "@/assets/icons/icon-ellipsis.svg";
 import type { Dropdown } from "@/types";
+import AddEditModal from "../modals/AddEditModal";
 import DeleteModal from "../modals/DeleteModal";
 
 export default function Dropdown({ category, children }: Dropdown) {
   const dropDownMenuRef = useRef<HTMLUListElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const [openEditModal, setOpenEditModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const handleDropDownButton = () => {
@@ -55,7 +57,14 @@ export default function Dropdown({ category, children }: Dropdown) {
         className="hidden absolute left-full -translate-x-full z-1 w-max px-space-250 py-space-150 text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4 bg-fill-two custom-shadow divide-y [&>li:first-child]:pb-space-150 [&>li:not(:first-child)]:not(:last-child)]:py-space-150 [&>li:last-child]:pt-space-150 divide-default rounded-alt"
       >
         <li>
-          <button className="text-color-one">Edit {children}</button>
+          <button
+            className="text-color-one"
+            onClick={() => {
+              setOpenEditModal(true);
+            }}
+          >
+            Edit {children}
+          </button>
         </li>
         <li>
           <button
@@ -68,6 +77,14 @@ export default function Dropdown({ category, children }: Dropdown) {
           </button>
         </li>
       </ul>
+      <AddEditModal
+        open={openEditModal}
+        onClose={() => setOpenEditModal(false)}
+        category={category}
+        variant="edit"
+        message="As your budgets change, feel free to update your spending limits."
+      />
+
       <DeleteModal
         category={category}
         open={openDeleteModal}
