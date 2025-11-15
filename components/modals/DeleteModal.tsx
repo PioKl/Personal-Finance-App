@@ -1,17 +1,12 @@
+import { DeleteModal as DeleteModalType } from "@/types";
 import { Modal, Box } from "@mui/material";
 import IconCloseModal from "@/assets/icons/icon-close-modal.svg";
-
-interface DeleteModalProps {
-  category: string;
-  open: boolean;
-  onClose: () => void;
-}
 
 export default function DeleteModal({
   category,
   open,
   onClose,
-}: DeleteModalProps) {
+}: DeleteModalType) {
   return (
     <Modal
       open={open}
