@@ -5,7 +5,11 @@ import type { Dropdown } from "@/types";
 import AddEditModal from "../modals/AddEditModal";
 import DeleteModal from "../modals/DeleteModal";
 
-export default function Dropdown({ category, children }: Dropdown) {
+export default function Dropdown({
+  category,
+  editMessage,
+  children,
+}: Dropdown) {
   const dropDownMenuRef = useRef<HTMLUListElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -80,9 +84,9 @@ export default function Dropdown({ category, children }: Dropdown) {
       <AddEditModal
         open={openEditModal}
         onClose={() => setOpenEditModal(false)}
-        category={category}
+        category={children}
         variant="edit"
-        message="As your budgets change, feel free to update your spending limits."
+        message={editMessage}
       />
 
       <DeleteModal
