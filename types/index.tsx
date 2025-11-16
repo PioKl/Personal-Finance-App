@@ -54,6 +54,7 @@ export type SectionCard = {
 //Dropdown
 export type Dropdown = {
   category: string;
+  editMessage: string;
   children: React.ReactNode;
 };
 
@@ -63,10 +64,18 @@ export type DeleteModal = {
   onClose: () => void;
 };
 
-export type AddEditModal = {
-  open: boolean;
-  onClose: () => void;
-  category: string;
-  message: string;
-  variant: "add" | "edit";
-};
+export type AddEditModal =
+  | {
+      variant: "add";
+      category: string; // w przypadku add string
+      open: boolean;
+      onClose: () => void;
+      message: string;
+    }
+  | {
+      variant: "edit";
+      category: React.ReactNode; //W tym przypadku przy edit to będzie główna nazwa np Budget, Pots itd, przekazywana w postaci children
+      open: boolean;
+      onClose: () => void;
+      message: string;
+    };
