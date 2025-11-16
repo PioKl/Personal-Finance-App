@@ -1,3 +1,4 @@
+"use client";
 import data from "@/data/data.json";
 import { Budgets as BudgetsType } from "@/types";
 import BudgetChart from "@/components/shared/BudgetChart";
@@ -9,7 +10,11 @@ import {
 } from "@/interfaces";
 import CategoryBudgets from "@/components/budgets/CategoryBudgets";
 import Button from "@/components/ui/Button";
+import AddEditModal from "@/components/modals/AddEditModal";
+import { useState } from "react";
 const Budgets = () => {
+  const [openAddModal, setOpenAddModal] = useState(false);
+
   /* Rzutowanie przez `unknown`, żeby TS pozwolił bezpiecznie określić strukturę.
   Dane JSON nie mają przypisanego pola _type dlatego unknown*/
   const { budgets } = data as unknown as { budgets: BudgetsType[] };
@@ -58,9 +63,19 @@ const Budgets = () => {
           variant="primary"
           isALink={false}
           className="flex items-center gap-space-150"
+          onClick={() => {
+            setOpenAddModal(true);
+          }}
         >
           + Add New Budget
         </Button>
+        <AddEditModal
+          open={openAddModal}
+          onClose={() => setOpenAddModal(false)}
+          category="Budget"
+          variant="add"
+          message="Choose a category to set a spending budget. These categories can help you monitor spending."
+        />
       </div>
       <div className="flex flex-col gap-space-300 2xl:flex-row">
         <SectionCard
