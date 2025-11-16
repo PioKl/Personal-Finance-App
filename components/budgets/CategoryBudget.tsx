@@ -35,7 +35,12 @@ export default function CategoryBudget({
         >
           {category}
         </h2>
-        <Dropdown category={category}>Budget</Dropdown>
+        <Dropdown
+          category={category}
+          editMessage="As your budgets change, feel free to update your spending limits"
+        >
+          Budget
+        </Dropdown>
       </div>
       <div className="grid gap-space-200">
         <span className="text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4 text-color-three">
