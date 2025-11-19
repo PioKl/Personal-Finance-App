@@ -28,8 +28,6 @@ export default function AddEditModal({
     );
   };
 
-  //Jak coś tutaj zmieniłem jeśli chodzi o przyszly push zamiast budgets to transactions i za pomocą set duplikaty usunąłem
-
   const sortSelectOptions = [
     ...new Set(data.transactions.map((item) => item.category)), //Usunięcie duplikatów za pomocą Set i użycie data.transactions ponieważ tam są zawarte wszystkie kategorie
   ];
