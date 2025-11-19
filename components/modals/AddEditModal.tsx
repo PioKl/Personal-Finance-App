@@ -6,6 +6,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconCloseModal from "@/assets/icons/icon-close-modal.svg";
 import IconDown from "@/assets/icons/icon-caret-down.svg";
+import { themeSelectOptions } from "@/utils/themes";
 import clsx from "clsx";
 import data from "@/data/data.json";
 interface RotatingIconProps {
@@ -27,22 +28,26 @@ export default function AddEditModal({
     );
   };
 
-  const sortSelectOptions = data.budgets.map((item) => item.category);
+  //Jak coś tutaj zmieniłem jeśli chodzi o przyszly push zamiast budgets to transactions i za pomocą set duplikaty usunąłem
+
+  const sortSelectOptions = [
+    ...new Set(data.transactions.map((item) => item.category)), //Usunięcie duplikatów za pomocą Set i użycie data.transactions ponieważ tam są zawarte wszystkie kategorie
+  ];
   const [sortValue, setSortValue] = useState(sortSelectOptions[0]);
   const handleSortBy = (value: string) => {
     setSortValue(value);
   };
 
-  const usedThemes = data.budgets.map((item) => item.theme);
+  //Lower, bo zamiast Budget, chcę sprawdzać po budget
+  const categoryLower =
+    typeof category === "string" ? category.toLocaleLowerCase() : "";
 
-  const themeSelectOptions = [
-    { id: 0, theme: "#277C78", value: "Green" },
-    { id: 1, theme: "#82C9D7", value: "Cyan" },
-    { id: 2, theme: "#F2CDAC", value: "Yellow" },
-    { id: 3, theme: "#626070", value: "Navy" },
-    { id: 4, theme: "#000000", value: "Black" },
-    { id: 5, theme: "#c94736", value: "Red" },
-  ];
+  //themes nie zawsze będzie budgets dotyczyć, dla potsów będzie pots
+  const usedThemes =
+    categoryLower === "budget"
+      ? data.budgets.map((item) => item.theme)
+      : data.pots.map((item) => item.theme);
+
   //Domyślny, żeby nie był już użytym theme
   const defaultThemeOption =
     themeSelectOptions.find((item) => !usedThemes.includes(item.theme)) ||
