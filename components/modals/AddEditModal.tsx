@@ -9,6 +9,7 @@ import IconDown from "@/assets/icons/icon-caret-down.svg";
 import { themeSelectOptions } from "@/utils/themes";
 import clsx from "clsx";
 import data from "@/data/data.json";
+import { isDigit } from "@/utils/validations";
 interface RotatingIconProps {
   className?: string;
 }
@@ -28,17 +29,32 @@ export default function AddEditModal({
     );
   };
 
-  const sortSelectOptions = [
-    ...new Set(data.transactions.map((item) => item.category)), //Usunięcie duplikatów za pomocą Set i użycie data.transactions ponieważ tam są zawarte wszystkie kategorie
-  ];
-  const [sortValue, setSortValue] = useState(sortSelectOptions[0]);
-  const handleSortBy = (value: string) => {
-    setSortValue(value);
-  };
-
   //Lower, bo zamiast Budget, chcę sprawdzać po budget
   const categoryLower =
     typeof category === "string" ? category.toLocaleLowerCase() : "";
+
+  //Wszystkie możliwe kategorie wyjęte z transactions
+  const sortSelectOptions = [
+    ...new Set(data.transactions.map((item) => item.category)), //Usunięcie duplikatów za pomocą Set i użycie data.transactions ponieważ tam są zawarte wszystkie kategorie
+  ];
+
+  //Użyte kategorie w budżecie
+  const usedCategories: string[] =
+    categoryLower === "budget" ? data.budgets.map((item) => item.category) : [];
+
+  //Unikalne kategorie, czyli bez tych już użytych w budżecie
+  const uniqueSelectCategories = sortSelectOptions.filter(
+    (item) => !usedCategories.includes(item)
+  );
+
+  //Wybrana wartość kategorii, domyślnie jest ustawiona pierwsza wolna kategoria
+  const [sortSelectCategoryOptionValue, setSortSelectCategoryOptionValue] =
+    useState(uniqueSelectCategories[0]);
+
+  //Funkcje ustawiająca nową wybraną kategorię (stan)
+  const handleSortByCategory = (value: string) => {
+    setSortSelectCategoryOptionValue(value);
+  };
 
   //themes nie zawsze będzie budgets dotyczyć, dla potsów będzie pots
   const usedThemes =
@@ -57,6 +73,10 @@ export default function AddEditModal({
   const handleSortByTheme = (value: string) => {
     setThemeSelecValue(value);
   };
+
+  //Walidacja, errory
+  const [spendingAmount, setSpendingAmount] = useState("");
+  const isError = spendingAmount.trim() === ""; //jeśli puste pole to błąd
 
   return (
     <Modal
@@ -93,20 +113,20 @@ export default function AddEditModal({
               </span>
               <TextField
                 select
-                defaultValue={sortSelectOptions[0]}
-                value={sortValue}
+                //defaultValue={sortSelectOptions[0]}
+                value={sortSelectCategoryOptionValue}
                 onChange={(e) => {
-                  handleSortBy(e.target.value);
+                  handleSortByCategory(e.target.value);
                 }}
                 className={clsx("mui-select", "w-full", "text-left")}
                 slotProps={{
                   select: {
                     IconComponent: RotatingIcon,
-                    renderValue: () => sortValue,
+                    renderValue: () => sortSelectCategoryOptionValue,
                   },
                 }}
               >
-                {sortSelectOptions.map((option) => (
+                {uniqueSelectCategories.map((option) => (
                   <MenuItem
                     key={option}
                     value={option}
@@ -125,8 +145,17 @@ export default function AddEditModal({
               <span className="flex text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5-bold text-color-three whitespace-nowrap">
                 Maximum Spending
               </span>
-              <FormControl className={clsx("mui-select w-full text-left")}>
+              <FormControl
+                className={clsx("mui-select w-full text-left")}
+                error={isError}
+              >
                 <OutlinedInput
+                  value={spendingAmount}
+                  onChange={(e) => {
+                    if (isDigit(e.target.value)) {
+                      setSpendingAmount(e.target.value);
+                    }
+                  }}
                   placeholder="e.g. 2000"
                   label="" // ← konieczne, żeby placeholder był widoczny
                   classes={{
