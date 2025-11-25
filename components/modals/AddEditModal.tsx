@@ -70,13 +70,18 @@ export default function AddEditModal({
   const [themeSelectValue, setThemeSelecValue] = useState(
     defaultThemeOption.value
   );
+
   const handleSortByTheme = (value: string) => {
     setThemeSelecValue(value);
   };
 
   //Walidacja, errory
   const [spendingAmount, setSpendingAmount] = useState("");
-  const isError = spendingAmount.trim() === ""; //jeśli puste pole to błąd
+  const [potName, setPotName] = useState("");
+  const validation = {
+    amount: spendingAmount.trim() === "", //jeśli puste pole to błąd
+    pot: potName.trim() === "", //jeśli puste pole to błąd
+  };
 
   return (
     <Modal
@@ -105,49 +110,87 @@ export default function AddEditModal({
         >
           {message}
         </p>
-        <ul className="grid gap-space-250 text-center">
+        <ul className="grid gap-space-200 text-center">
+          {categoryLower === "budget" && (
+            <li>
+              <div className="flex flex-col items-start gap-space-100">
+                <span className="flex text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5-bold text-color-three whitespace-nowrap">
+                  Budget category
+                </span>
+                <TextField
+                  select
+                  //defaultValue={sortSelectOptions[0]}
+                  value={sortSelectCategoryOptionValue}
+                  onChange={(e) => {
+                    handleSortByCategory(e.target.value);
+                  }}
+                  className={clsx("mui-select", "w-full", "text-left")}
+                  slotProps={{
+                    select: {
+                      IconComponent: RotatingIcon,
+                      renderValue: () => sortSelectCategoryOptionValue,
+                    },
+                  }}
+                >
+                  {uniqueSelectCategories.map((option) => (
+                    <MenuItem
+                      key={option}
+                      value={option}
+                      autoFocus={false}
+                      disableRipple //wyłączenie pojawiania się wypełnienia tła kolorem przy kliknięciu na przycisk
+                      className="!text-preset-4 !tracking-preset-4 !leading-preset-4 !font-preset-4 !text-color-one [&.Mui-selected]:!font-preset-4d !border-b-1 !border-default !px-0 !py-space-150 [&.Mui-selected]:!bg-transparent [&.Mui-selected:hover]:!bg-transparent hover:!bg-transparent hover:!font-preset-4-bold focus-within:!bg-transparent focus-within:!font-preset-4-bold"
+                    >
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </div>
+            </li>
+          )}
+          {categoryLower === "pot" && (
+            <li>
+              <div className="flex flex-col items-start gap-space-100">
+                <span className="flex text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5-bold text-color-three whitespace-nowrap">
+                  Pot Name
+                </span>
+                <FormControl
+                  className={clsx("mui-select w-full text-left")}
+                  error={validation.pot}
+                >
+                  <OutlinedInput
+                    value={potName}
+                    onChange={(e) => {
+                      setPotName(e.target.value);
+                    }}
+                    placeholder="e.g. Rainy Days"
+                    label="" // ← konieczne, żeby placeholder był widoczny
+                    inputProps={{ maxLength: 30 }}
+                    classes={{
+                      input:
+                        "!py-space-150 !text-preset-4 !tracking-preset-4 !leading-preset-4 !font-preset-4", // ← padding inputa
+                    }}
+                    sx={{
+                      "& input::placeholder": {
+                        color: "#98908b", // kolor placeholdera
+                        opacity: 1,
+                      },
+                    }}
+                  />
+                  <span className="text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5 text-color-three mt-1 ml-auto">
+                    {30 - potName.length} characters left
+                  </span>
+                </FormControl>
+              </div>
+            </li>
+          )}
           <li>
             <div className="flex flex-col items-start gap-space-100">
               <span className="flex text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5-bold text-color-three whitespace-nowrap">
-                Budget category
-              </span>
-              <TextField
-                select
-                //defaultValue={sortSelectOptions[0]}
-                value={sortSelectCategoryOptionValue}
-                onChange={(e) => {
-                  handleSortByCategory(e.target.value);
-                }}
-                className={clsx("mui-select", "w-full", "text-left")}
-                slotProps={{
-                  select: {
-                    IconComponent: RotatingIcon,
-                    renderValue: () => sortSelectCategoryOptionValue,
-                  },
-                }}
-              >
-                {uniqueSelectCategories.map((option) => (
-                  <MenuItem
-                    key={option}
-                    value={option}
-                    autoFocus={false}
-                    disableRipple //wyłączenie pojawiania się wypełnienia tła kolorem przy kliknięciu na przycisk
-                    className="!text-preset-4 !tracking-preset-4 !leading-preset-4 !font-preset-4 !text-color-one [&.Mui-selected]:!font-preset-4d !border-b-1 !border-default !px-0 !py-space-150 [&.Mui-selected]:!bg-transparent [&.Mui-selected:hover]:!bg-transparent hover:!bg-transparent hover:!font-preset-4-bold focus-within:!bg-transparent focus-within:!font-preset-4-bold"
-                  >
-                    {option}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
-          </li>
-          <li>
-            <div className="flex flex-col items-start gap-space-100">
-              <span className="flex text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5-bold text-color-three whitespace-nowrap">
-                Maximum Spending
+                {categoryLower === "budget" ? "Maximum Spending" : "Target"}
               </span>
               <FormControl
                 className={clsx("mui-select w-full text-left")}
-                error={isError}
+                error={validation.amount}
               >
                 <OutlinedInput
                   value={spendingAmount}
@@ -251,12 +294,16 @@ export default function AddEditModal({
               </TextField>
             </div>
           </li>
-          <li>
+          <li className="mt-1">
             <button
               className="w-full p-space-200 text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4-bold bg-fill-one text-color-two rounded-alt"
               /* onClick={variant === "add" ? handleAddBudget : handleSaveChanges} */
             >
-              {variant === "add" ? "Add Budget" : "Save Changes"}
+              {variant === "add"
+                ? categoryLower === "budget"
+                  ? "Add Budget"
+                  : "Add Pot"
+                : "Save Changes"}
             </button>
           </li>
         </ul>
