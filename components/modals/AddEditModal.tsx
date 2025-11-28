@@ -83,6 +83,9 @@ export default function AddEditModal({
     pot: potName.trim() === "", //jeśli puste pole to błąd
   };
 
+  //Pot, maksymalna liczba znaków
+  const maxNumberOfCharacters = 30;
+
   return (
     <Modal
       open={open}
@@ -164,7 +167,7 @@ export default function AddEditModal({
                     }}
                     placeholder="e.g. Rainy Days"
                     label="" // ← konieczne, żeby placeholder był widoczny
-                    inputProps={{ maxLength: 30 }}
+                    inputProps={{ maxLength: maxNumberOfCharacters }}
                     classes={{
                       input:
                         "!py-space-150 !text-preset-4 !tracking-preset-4 !leading-preset-4 !font-preset-4", // ← padding inputa
@@ -177,7 +180,7 @@ export default function AddEditModal({
                     }}
                   />
                   <span className="text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5 text-color-three mt-1 ml-auto">
-                    {30 - potName.length} characters left
+                    {maxNumberOfCharacters - potName.length} characters left
                   </span>
                 </FormControl>
               </div>
