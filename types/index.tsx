@@ -55,11 +55,13 @@ export type SectionCard = {
 export type Dropdown = {
   category: string;
   editMessage: string;
+  deleteMessage: string;
   children: React.ReactNode;
 };
 
 export type DeleteModal = {
   category: string;
+  message: string;
   open: boolean;
   onClose: () => void;
 };
