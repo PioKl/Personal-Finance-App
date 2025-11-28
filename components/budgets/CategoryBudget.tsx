@@ -38,6 +38,8 @@ export default function CategoryBudget({
         <Dropdown
           category={category}
           editMessage="As your budgets change, feel free to update your spending limits"
+          deleteMessage="Are you sure you want to delete this budget? This action cannot be
+          reversed, and all the data inside it will be removed forever."
         >
           Budget
         </Dropdown>
