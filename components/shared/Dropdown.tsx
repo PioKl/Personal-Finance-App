@@ -8,6 +8,7 @@ import DeleteModal from "../modals/DeleteModal";
 export default function Dropdown({
   category,
   editMessage,
+  deleteMessage,
   children,
 }: Dropdown) {
   const dropDownMenuRef = useRef<HTMLUListElement>(null);
@@ -91,6 +92,7 @@ export default function Dropdown({
 
       <DeleteModal
         category={category}
+        message={deleteMessage}
         open={openDeleteModal}
         onClose={() => setOpenDeleteModal(false)}
       />
