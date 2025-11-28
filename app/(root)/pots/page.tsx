@@ -2,6 +2,8 @@
 import { useState } from "react";
 import Button from "@/components/ui/Button";
 import AddEditModal from "@/components/modals/AddEditModal";
+import PotsList from "@/components/pots/PotsList";
+import data from "@/data/data.json";
 
 const Pots = () => {
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -26,6 +28,9 @@ const Pots = () => {
           variant="add"
           message="Create a pot to set savings targets. These can help keep you on track as you save for special purchases."
         />
+      </div>
+      <div>
+        <PotsList pots={data.pots} />
       </div>
     </section>
   );
