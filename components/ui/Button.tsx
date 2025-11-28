@@ -19,7 +19,8 @@ const Button = <T,>({
     //Standard Button
     primary:
       "p-space-200 rounded-alt bg-fill-one text-fill-two text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4-bold hover:bg-fill-pagination focus-visible:border-primary-button-active focus-visible:bg-fill-pagination focus-visible:outline-none",
-    secondary: "",
+    secondary:
+      "p-space-200 rounded-alt bg-fill-three text-fill-one text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4-bold hover:bg-fill-pagination hover:text-fill-two focus-visible:text-fill-two focus-visible:border-primary-button-active focus-visible:bg-fill-pagination focus-visible:outline-none",
     tertiary: "",
     destroy: "",
     //Sidebar
