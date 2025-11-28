@@ -4,6 +4,7 @@ import IconCloseModal from "@/assets/icons/icon-close-modal.svg";
 
 export default function DeleteModal({
   category,
+  message,
   open,
   onClose,
 }: DeleteModalType) {
@@ -32,8 +33,7 @@ export default function DeleteModal({
           id="modal-description"
           className="text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4 text-color-three"
         >
-          Are you sure you want to delete this budget? This action cannot be
-          reversed, and all the data inside it will be removed forever.
+          {message}
         </p>
         <ul className="grid gap-space-250 text-center text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4-bold">
           <li>
