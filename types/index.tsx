@@ -83,7 +83,9 @@ export type AddEditModal =
     };
 
 export type AddWithdrawMoneyModal = {
-  variant: "add" | "edit";
+  variant: "add" | "withdraw";
+  message: string;
+  amount: number;
   open: boolean;
   onClose: () => void;
 };
