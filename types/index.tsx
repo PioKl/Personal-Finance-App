@@ -85,6 +85,7 @@ export type AddEditModal =
 export type AddWithdrawMoneyModal = {
   variant: "add" | "withdraw";
   message: string;
+  name: string;
   amount: number;
   target: number;
   open: boolean;
