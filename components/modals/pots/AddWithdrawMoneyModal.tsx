@@ -28,6 +28,12 @@ export default function AddWithdrawMoneyModal({
   const validation = {
     amount: spendingAmount.trim() === "", //jeśli puste pole to błąd
   };
+  const parsedSpendingAmount = Number(spendingAmount);
+  const parsedSpendingAmountPercent = Math.min(
+    (Number(spendingAmount) / Number(target)) * 100,
+    100 - amountSaved
+  );
+
   return (
     <Modal
       open={open}
@@ -55,7 +61,7 @@ export default function AddWithdrawMoneyModal({
               New Amount
             </span>
             <span className="text-preset-1 tracking-preset-1 leading-preset-1 font-preset-1 text-color-one">
-              ${priceDollarsFormatting(amount)}
+              ${priceDollarsFormatting(amount + parsedSpendingAmount)}
             </span>
           </div>
           <div className="relative w-full h-2 bg-fill-three rounded-small">
@@ -68,9 +74,27 @@ export default function AddWithdrawMoneyModal({
               }
             ></div>
             {/* Math.min, druga wartość tam gdzie 100 oznacza ograniczenie do 100 tylko max tyle może osiągnać */}
+            {variant === "add" && (
+              <div
+                className="absolute w-[calc(var(--spent-percent)-8px)] h-2 bg-amount rounded-small"
+                style={
+                  {
+                    width: `clamp(0px, ${Math.min(
+                      parsedSpendingAmountPercent,
+                      100
+                    )}%, 100%)`,
+                    left: `clamp(4px, ${Math.min(amountSaved, 100)}%, 100%)`,
+                  } as React.CSSProperties
+                }
+              ></div>
+            )}
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5-bold text-color-three">
+            <span
+              className={`text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5-bold ${
+                parsedSpendingAmount > 0 ? "text-amount" : "text-color-three"
+              }`}
+            >
               {formatPercent(amountSaved)}%
             </span>
             <span className="text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5 text-color-three">
