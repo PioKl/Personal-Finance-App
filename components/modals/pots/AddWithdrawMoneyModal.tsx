@@ -24,13 +24,13 @@ export default function AddWithdrawMoneyModal({
 }: AddWithdrawMoneyModalType) {
   const amountSaved = (amount / target) * 100;
   //Walidacja, errory
-  const [spendingAmount, setSpendingAmount] = useState("");
+  const [newAmount, setNewAmount] = useState("");
   const validation = {
-    amount: spendingAmount.trim() === "", //jeśli puste pole to błąd
+    amount: newAmount.trim() === "", //jeśli puste pole to błąd
   };
-  const parsedSpendingAmount = Number(spendingAmount);
-  const parsedSpendingAmountPercent = Math.min(
-    (Number(spendingAmount) / Number(target)) * 100,
+  const parsedNewAmount = Number(newAmount);
+  const parsedNewAmountPercent = Math.min(
+    (Number(newAmount) / Number(target)) * 100,
     100 - amountSaved
   );
 
@@ -61,7 +61,7 @@ export default function AddWithdrawMoneyModal({
               New Amount
             </span>
             <span className="text-preset-1 tracking-preset-1 leading-preset-1 font-preset-1 text-color-one">
-              ${priceDollarsFormatting(amount + parsedSpendingAmount)}
+              ${priceDollarsFormatting(amount + parsedNewAmount)}
             </span>
           </div>
           <div className="relative w-full h-2 bg-fill-three rounded-small">
@@ -80,7 +80,7 @@ export default function AddWithdrawMoneyModal({
                 style={
                   {
                     width: `clamp(0px, ${Math.min(
-                      parsedSpendingAmountPercent,
+                      parsedNewAmountPercent,
                       100
                     )}%, 100%)`,
                     left: `clamp(4px, ${Math.min(amountSaved, 100)}%, 100%)`,
@@ -92,7 +92,7 @@ export default function AddWithdrawMoneyModal({
           <div className="flex items-center justify-between">
             <span
               className={`text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5-bold ${
-                parsedSpendingAmount > 0 ? "text-amount" : "text-color-three"
+                parsedNewAmount > 0 ? "text-amount" : "text-color-three"
               }`}
             >
               {formatPercent(amountSaved)}%
@@ -112,10 +112,10 @@ export default function AddWithdrawMoneyModal({
             error={validation.amount}
           >
             <OutlinedInput
-              value={spendingAmount}
+              value={newAmount}
               onChange={(e) => {
                 if (isDigit(e.target.value)) {
-                  setSpendingAmount(e.target.value);
+                  setNewAmount(e.target.value);
                 }
               }}
               placeholder="e.g. 2000"
