@@ -1,12 +1,15 @@
+import { useState } from "react";
 import { Pots } from "@/types";
 import Dropdown from "../shared/Dropdown";
 import { priceDollarsFormatting } from "@/utils/formattingFunctions";
 import { formatPercent } from "@/utils/formattingFunctions";
 import Button from "../ui/Button";
+import AddWithdrawMoneyModal from "../modals/pots/AddWithdrawMoneyModal";
 
 export default function PotItem({ name, target, total, theme }: Pots) {
   const totalSaved = (total / target) * 100;
-
+  const [openAddModal, setOpenAddModal] = useState(false);
+  const [openWithdrawModal, setOpenWithdrawModal] = useState(false);
   return (
     <li className="grid gap-space-250 py-space-300 px-space-250 md:p-space-400 bg-fill-two rounded-default">
       <div className="flex justify-between">
@@ -53,6 +56,9 @@ export default function PotItem({ name, target, total, theme }: Pots) {
             variant="secondary"
             isALink={false}
             className="flex flex-1 items-center justify-center gap-space-150"
+            onClick={() => {
+              setOpenAddModal(true);
+            }}
           >
             + Add Money
           </Button>
@@ -60,9 +66,30 @@ export default function PotItem({ name, target, total, theme }: Pots) {
             variant="secondary"
             isALink={false}
             className="flex flex-1 items-center justify-center gap-space-150"
+            onClick={() => {
+              setOpenWithdrawModal(true);
+            }}
           >
             Withdraw
           </Button>
+          <AddWithdrawMoneyModal
+            open={openAddModal}
+            onClose={() => setOpenAddModal(false)}
+            variant="add"
+            message="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus  hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet."
+            amount={total}
+            target={target}
+            name={name}
+          />
+          <AddWithdrawMoneyModal
+            open={openWithdrawModal}
+            onClose={() => setOpenWithdrawModal(false)}
+            variant="withdraw"
+            message="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus  hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet."
+            amount={total}
+            target={target}
+            name={name}
+          />
         </div>
       </div>
     </li>
