@@ -29,9 +29,13 @@ export default function AddWithdrawMoneyModal({
     amount: newAmount.trim() === "", //jeśli puste pole to błąd
   };
   const parsedNewAmount = Number(newAmount);
-  const parsedNewAmountPercent = Math.min(
-    (Number(newAmount) / Number(target)) * 100,
-    100 - amountSaved
+  const parsedNewAmountPercent = (Number(newAmount) / target) * 100;
+
+  const addFormatPercent = Number(
+    formatPercent(amountSaved + parsedNewAmountPercent)
+  );
+  const withdrawFormatPercent = Number(
+    formatPercent(amountSaved - parsedNewAmountPercent)
   );
 
   return (
@@ -41,7 +45,7 @@ export default function AddWithdrawMoneyModal({
       aria-labelledby="modal-title"
       aria-describedby="modal-description"
     >
-      <Box className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 grid gap-space-250 max-w-[335px] px-space-250 py-space-300 custom-shadow-modal bg-fill-two rounded-default md:max-w-[560px] md:p-space-400">
+      <Box className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 grid gap-space-250 min-w-[335px] px-space-250 py-space-300 custom-shadow-modal bg-fill-two rounded-default md:max-w-[560px] md:p-space-400">
         <div className="flex items-center justify-between">
           <h1
             id="modal-title"
@@ -61,18 +65,39 @@ export default function AddWithdrawMoneyModal({
               New Amount
             </span>
             <span className="text-preset-1 tracking-preset-1 leading-preset-1 font-preset-1 text-color-one">
-              ${priceDollarsFormatting(amount + parsedNewAmount)}
+              $
+              {variant === "add"
+                ? priceDollarsFormatting(amount + parsedNewAmount)
+                : priceDollarsFormatting(amount - parsedNewAmount)}
             </span>
           </div>
           <div className="relative w-full h-2 bg-fill-three rounded-small">
-            <div
-              className="absolute w-[calc(var(--spent-percent)-8px)] h-2 bg-fill-one rounded-small"
-              style={
-                {
-                  width: `clamp(4px, ${Math.min(amountSaved, 100)}%, 100%)`,
-                } as React.CSSProperties
-              }
-            ></div>
+            {(variant === "add" ||
+              //Ten poniższy dzieje się w przypadku withdraw
+              (variant === "withdraw" && withdrawFormatPercent > 0)) && (
+              <div
+                className="absolute w-[calc(var(--spent-percent)-8px)] h-2 bg-fill-one rounded-small"
+                style={
+                  {
+                    width: `clamp(4px, ${Math.min(amountSaved, 100)}%, 100%)`,
+                  } as React.CSSProperties
+                }
+              ></div>
+            )}
+            {variant === "withdraw" && (
+              <div
+                className="absolute w-[calc(var(--spent-percent)-8px)] h-2 bg-red-700 rounded-small"
+                style={
+                  {
+                    width: `clamp(0px, ${Math.min(
+                      parsedNewAmountPercent,
+                      100
+                    )}%, 100%)`,
+                  } as React.CSSProperties
+                }
+              ></div>
+            )}
+
             {/* Math.min, druga wartość tam gdzie 100 oznacza ograniczenie do 100 tylko max tyle może osiągnać */}
             {variant === "add" && (
               <div
@@ -92,10 +117,16 @@ export default function AddWithdrawMoneyModal({
           <div className="flex items-center justify-between">
             <span
               className={`text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5-bold ${
-                parsedNewAmount > 0 ? "text-amount" : "text-color-three"
+                variant === "add"
+                  ? parsedNewAmount > 0
+                    ? "text-amount"
+                    : "text-color-three"
+                  : withdrawFormatPercent > 0
+                  ? "text-color-three"
+                  : "text-color-red"
               }`}
             >
-              {formatPercent(amountSaved)}%
+              {variant === "add" ? addFormatPercent : withdrawFormatPercent}%
             </span>
             <span className="text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5 text-color-three">
               Target of ${target}
@@ -114,7 +145,20 @@ export default function AddWithdrawMoneyModal({
             <OutlinedInput
               value={newAmount}
               onChange={(e) => {
-                if (isDigit(e.target.value)) {
+                if (
+                  variant === "withdraw" &&
+                  e.target.value.length <= 4 &&
+                  isDigit(e.target.value)
+                ) {
+                  setNewAmount(e.target.value);
+                } else if (
+                  isDigit(e.target.value) &&
+                  Number(e.target.value) <=
+                    Number(target) -
+                      Number(
+                        amount
+                      ) /* maksymalna kwota nie może przekroczyć róznicy maksymalnego targetu i amount */
+                ) {
                   setNewAmount(e.target.value);
                 }
               }}
