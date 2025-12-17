@@ -1,5 +1,13 @@
 import IconRecurringBills from "@/assets/icons/icon-recurring-bills.svg";
+import data from "@/data/data.json";
 const RecurringBills = () => {
+  const recurringBills = data.transactions.filter(
+    (item) => item.recurring === true && item.category === "Bills"
+  );
+  const recurringBillsSum = recurringBills
+    .map((item) => item.amount)
+    .reduce((a, b) => a + b, 0);
+
   return (
     <section className="grid gap-space-400">
       <div className="flex items-center justify-between">
