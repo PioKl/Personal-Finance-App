@@ -1,8 +1,26 @@
 import IconRecurringBills from "@/assets/icons/icon-recurring-bills.svg";
 import data from "@/data/data.json";
+import { balance, transactions, budgets, pots } from "@/data/data.json";
 const RecurringBills = () => {
   const recurringBills = data.transactions.filter(
-    (item) => item.recurring === true && item.category === "Bills"
+    (item) =>
+      item.recurring === true &&
+      (item.date.charAt(6) === "8" || item.date.substring(8, 10) > "19")
+
+    /* charAt(6)
+    date = "2025-08-23";
+    0 1 2 3 4 5 6 7 8 9
+    2 0 2 5 - 0 8 - 2 3
+                ↑
+                6
+    */
+    /* 
+      item.date.substring(8, 10) > "19"
+      0 1 2 3 4 5 6 7 8 9
+      2 0 2 5 - 0 8 - 2 3
+                      ↑ ↑
+                      8 9
+      */
   );
   const recurringBillsSum = recurringBills
     .map((item) => item.amount)
@@ -22,7 +40,7 @@ const RecurringBills = () => {
                 Total Bills
               </span>
               <span className="text-preset-1 tracking-preset-1 leading-preset-1 font-preset-1">
-                $384.98
+                ${Math.abs(recurringBillsSum)}
               </span>
             </div>
           </div>
