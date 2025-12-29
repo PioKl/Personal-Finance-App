@@ -1,12 +1,67 @@
 import IconRecurringBills from "@/assets/icons/icon-recurring-bills.svg";
 import data from "@/data/data.json";
 import { balance, transactions, budgets, pots } from "@/data/data.json";
+
 const RecurringBills = () => {
+  //Do poprawki
+  //paid bills to po prostu zaplacone te z sierpnia juz przed data 19
+  //Due soon 5 dni do przodu od ostatniej transakcji
+  //total upcoming wszystkie w przyszlosci, czyli wszystkie nadchodzące czyli na podstawie tych powtarzajacych sie z lipca mozna przyjac, ze wszystkie po dacie 19 z lipca beda tez to zaplaty w sierpniu dlatego total upcoming to item.date.substring(8, 10) > "19"
+
+  const latestTransaction = data.transactions[0].date.substring(8, 10); //wyciągnięcie samego dnia
+  /* 
+      date.substring(8, 10)
+      0 1 2 3 4 5 6 7 8 9
+      2 0 2 5 - 0 8 - 1 9
+                      ↑ ↑
+                      8 9
+      */
+
+  const paidBills = data.transactions.filter(
+    (item) => item.recurring === true && item.date.charAt(6) === "8"
+    /*Dany miesiąc, tu chodzi o sierpień
+    charAt(6)
+    date = "2025-08-23";
+    0 1 2 3 4 5 6 7 8 9
+    2 0 2 5 - 0 8 - 2 3
+                ↑
+                6
+    */
+  );
+  const totalUpcoming = data.transactions.filter(
+    (item) =>
+      item.recurring === true && item.date.substring(8, 10) > latestTransaction
+  );
+
+  //zakres, ze od ostatniej transkacji 5 dni max do przodu
+  const dueSoon = data.transactions.filter(
+    (item) =>
+      item.recurring === true &&
+      item.date.substring(8, 10) > latestTransaction &&
+      item.date.substring(8, 10) <= (Number(latestTransaction) + 5).toString()
+  );
+
+  const paidBillsSum = paidBills
+    .map((item) => item.amount)
+    .reduce((a, b) => a + b, 0);
+
+  const totalUpcomingSum = totalUpcoming
+    .map((item) => item.amount)
+    .reduce((a, b) => a + b, 0);
+
+  const dueSoonSum = dueSoon
+    .map((item) => item.amount)
+    .reduce((a, b) => a + b, 0);
+
+  //to jest połączenie paidBills i totalUpcoming
   const recurringBills = data.transactions.filter(
     (item) =>
       item.recurring === true &&
       (item.date.charAt(6) === "8" || item.date.substring(8, 10) > "19")
-
+    /* 
+     - Show the recurring transactions that have already been paid for August 2024.
+     - Show the payments due to be paid soon based on their monthly payment date. Calculate this from recurring transactions yet to be paid for August 2024, but due within five days of the latest overall transaction in the app (Emma Richardson - 19 August 2024).
+    */
     /* charAt(6)
     date = "2025-08-23";
     0 1 2 3 4 5 6 7 8 9
@@ -40,7 +95,7 @@ const RecurringBills = () => {
                 Total Bills
               </span>
               <span className="text-preset-1 tracking-preset-1 leading-preset-1 font-preset-1">
-                ${Math.abs(recurringBillsSum)}
+                ${Math.abs(paidBillsSum + totalUpcomingSum)}
               </span>
             </div>
           </div>
