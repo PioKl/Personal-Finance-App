@@ -1,6 +1,7 @@
 import IconRecurringBills from "@/assets/icons/icon-recurring-bills.svg";
 import data from "@/data/data.json";
 import { balance, transactions, budgets, pots } from "@/data/data.json";
+import { priceDollarsFormatting } from "@/utils/formattingFunctions";
 
 const RecurringBills = () => {
   //Do poprawki
@@ -81,23 +82,65 @@ const RecurringBills = () => {
     .map((item) => item.amount)
     .reduce((a, b) => a + b, 0);
 
+  const summaryListItems = [
+    {
+      name: "Paid Bills",
+      value: `${paidBills.length} ($${priceDollarsFormatting(
+        paidBillsSum,
+        true
+      )})`,
+    },
+    {
+      name: "Total Upcoming",
+      value: `${totalUpcoming.length} ($${priceDollarsFormatting(
+        totalUpcomingSum,
+        true
+      )})`,
+    },
+    {
+      name: "Due Soon",
+      value: `${dueSoon.length} ($${priceDollarsFormatting(dueSoonSum, true)})`,
+    },
+  ];
+
   return (
     <section className="grid gap-space-400">
       <div className="flex items-center justify-between">
         <h1>Recurring Bills</h1>
       </div>
       <div>
-        <div>
-          <div className="flex items-center rounded-default gap-space-250 px-space-250 py-space-300 bg-fill-one">
+        <div className="flex flex-col gap-space-150">
+          <div className="flex items-center rounded-default gap-space-250 px-space-250 py-space-300 bg-fill-one md:flex-col md:items-start md:gap-space-400">
             <IconRecurringBills />
             <div className="grid gap-space-150 text-color-two">
               <span className="text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4">
                 Total Bills
               </span>
               <span className="text-preset-1 tracking-preset-1 leading-preset-1 font-preset-1">
-                ${Math.abs(paidBillsSum + totalUpcomingSum)}
+                ${Math.abs(recurringBillsSum)}
               </span>
             </div>
+          </div>
+
+          <div className="flex flex-col gap-space-250 px-space-250 py-space-300 rounded-default bg-fill-two">
+            <h2 className="text-preset-3 tracking-preset-3 leading-preset-3 font-preset-3">
+              Summary
+            </h2>
+            <ul className="flex flex-col gap-space-200">
+              {summaryListItems.map(({ name, value }) => (
+                <li
+                  key={name}
+                  className="flex justify-between py-space-200 border-b-1 border-default last:border-0 last:pb-0 last:[&>span]:text-color-red"
+                >
+                  <span className="text-color-three text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5">
+                    {name}
+                  </span>
+                  <span className="text-color-one text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5-bold">
+                    {value}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
         <div></div>
