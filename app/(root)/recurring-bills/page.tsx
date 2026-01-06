@@ -108,9 +108,9 @@ const RecurringBills = () => {
       <div className="flex items-center justify-between">
         <h1>Recurring Bills</h1>
       </div>
-      <div>
-        <div className="flex flex-col gap-space-150">
-          <div className="flex items-center rounded-default gap-space-250 px-space-250 py-space-300 bg-fill-one md:flex-col md:items-start md:gap-space-400">
+      <div className="flex flex-col gap-space-300 lg:flex-row">
+        <div className="flex flex-col gap-space-150 md:flex-row md:gap-space-300 lg:flex-col lg:min-w-[337px]">
+          <div className="flex flex-1 items-center rounded-default gap-space-250 px-space-250 py-space-300 bg-fill-one md:flex-col md:items-start md:justify-end md:gap-space-400 lg:justify-start">
             <IconRecurringBills />
             <div className="grid gap-space-150 text-color-two">
               <span className="text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4">
@@ -122,7 +122,7 @@ const RecurringBills = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-space-250 px-space-250 py-space-300 rounded-default bg-fill-two">
+          <div className="flex flex-1 flex-col gap-space-250 px-space-250 py-space-300 rounded-default bg-fill-two">
             <h2 className="text-preset-3 tracking-preset-3 leading-preset-3 font-preset-3">
               Summary
             </h2>
@@ -130,7 +130,7 @@ const RecurringBills = () => {
               {summaryListItems.map(({ name, value }) => (
                 <li
                   key={name}
-                  className="flex justify-between py-space-200 border-b-1 border-default last:border-0 last:pb-0 last:[&>span]:text-color-red"
+                  className="flex justify-between pb-space-200 border-b-1 border-default last:border-0 last:pb-0 last:[&>span]:text-color-red"
                 >
                   <span className="text-color-three text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5">
                     {name}
@@ -143,7 +143,9 @@ const RecurringBills = () => {
             </ul>
           </div>
         </div>
-        <div></div>
+        <div className="flex flex-1 bg-fill-two">
+          <h1>Placeholder</h1>
+        </div>
       </div>
     </section>
   );
