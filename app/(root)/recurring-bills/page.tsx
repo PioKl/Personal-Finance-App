@@ -1,7 +1,20 @@
+"use client";
+import { useState, useMemo } from "react";
 import IconRecurringBills from "@/assets/icons/icon-recurring-bills.svg";
 import data from "@/data/data.json";
 import { balance, transactions, budgets, pots } from "@/data/data.json";
 import { priceDollarsFormatting } from "@/utils/formattingFunctions";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  InputAdornment,
+  MenuItem,
+} from "@mui/material";
 
 const RecurringBills = () => {
   //Do poprawki
@@ -102,6 +115,62 @@ const RecurringBills = () => {
       value: `${dueSoon.length} ($${priceDollarsFormatting(dueSoonSum, true)})`,
     },
   ];
+
+  /* Transakcje, wyszukiwanie, sortowanie */
+  const sortSelectOptions = [
+    {
+      value: "Latest",
+    },
+    {
+      value: "Oldest",
+    },
+    {
+      value: "A to Z",
+    },
+    {
+      value: "Z to A",
+    },
+    {
+      value: "Highest",
+    },
+    {
+      value: "Lowest",
+    },
+  ];
+
+  const [searchValue, setSearchValue] = useState("");
+  const [sortValue, setSortValue] = useState(sortSelectOptions[0].value);
+
+  const filteredAndSortedTransactions = useMemo(() => {
+    const filteredTransactions = recurringBills.filter((item) => {
+      const nameMatches = item.name
+        .toLowerCase()
+        .includes(searchValue.toLowerCase());
+      return nameMatches;
+    });
+
+    const sorted = [...filteredTransactions].sort((a, b) => {
+      switch (sortValue) {
+        case "Latest":
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        case "Oldest":
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        case "A to Z":
+          return a.name.localeCompare(b.name);
+        case "Z to A":
+          return b.name.localeCompare(a.name);
+        case "Highest":
+          return b.amount - a.amount;
+        case "Lowest":
+          return a.amount - b.amount;
+        default:
+          return 0;
+      }
+    });
+    return sorted;
+  }, [recurringBills, searchValue, sortValue]);
+
+  console.log(filteredAndSortedTransactions);
 
   return (
     <section className="grid gap-space-400">
