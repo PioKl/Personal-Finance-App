@@ -155,6 +155,10 @@
     @apply !text-preset-5 !tracking-preset-5 !leading-preset-5 !font-preset-5 !text-color-three;
   }
 
+  .MuiTableCell-root .mui-mobile-text-positive {
+    @apply !text-preset-5 !tracking-preset-5 !leading-preset-5 !font-preset-5 !text-amount;
+  }
+
   .mui-search input {
     @apply !px-space-250 !py-space-150;
   }
