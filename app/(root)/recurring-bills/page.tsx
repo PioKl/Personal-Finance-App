@@ -1,9 +1,17 @@
 "use client";
 import { useState, useMemo } from "react";
+import Image from "next/image";
+import clsx from "clsx";
 import IconRecurringBills from "@/assets/icons/icon-recurring-bills.svg";
+import IconSearch from "@/assets/icons/icon-search.svg";
+import IconDown from "@/assets/icons/icon-caret-down.svg";
+import IconSortMobile from "@/assets/icons/icon-sort-mobile.svg";
 import data from "@/data/data.json";
 import { balance, transactions, budgets, pots } from "@/data/data.json";
-import { priceDollarsFormatting } from "@/utils/formattingFunctions";
+import {
+  priceDollarsFormatting,
+  formatDateOrdinalIndicators,
+} from "@/utils/formattingFunctions";
 import {
   Table,
   TableBody,
@@ -15,6 +23,15 @@ import {
   InputAdornment,
   MenuItem,
 } from "@mui/material";
+import { useBreakpoint } from "@/utils/breakpoints";
+
+interface RotatingIconProps {
+  className?: string;
+}
+
+interface IconSortProps {
+  className?: string;
+}
 
 const RecurringBills = () => {
   //Do poprawki
@@ -44,16 +61,20 @@ const RecurringBills = () => {
   );
   const totalUpcoming = data.transactions.filter(
     (item) =>
-      item.recurring === true && item.date.substring(8, 10) > latestTransaction
+      item.recurring === true &&
+      Number(item.date.substring(8, 10)) > Number(latestTransaction)
   );
 
   //zakres, ze od ostatniej transkacji 5 dni max do przodu
   const dueSoon = data.transactions.filter(
     (item) =>
       item.recurring === true &&
-      item.date.substring(8, 10) > latestTransaction &&
-      item.date.substring(8, 10) <= (Number(latestTransaction) + 5).toString()
+      Number(item.date.substring(8, 10)) > Number(latestTransaction) &&
+      Number(item.date.substring(8, 10)) <= Number(latestTransaction) + 5
   );
+
+  // potrzebne przy has, bo Set działa tylko przy has
+  const dueSoonDates = new Set(dueSoon.map((item) => item.date));
 
   const paidBillsSum = paidBills
     .map((item) => item.amount)
@@ -138,8 +159,37 @@ const RecurringBills = () => {
     },
   ];
 
+  const RotatingIcon = ({ className, ...other }: RotatingIconProps) => {
+    return (
+      <IconDown
+        {...other} // obsługuje kliknięcie selecta i dostępność
+        className={`!top-[45%] !right-[16px] transition-transform duration-200 ${className}`}
+      />
+    );
+  };
+
+  const IconSort = ({ className, ...other }: IconSortProps) => {
+    return (
+      <IconSortMobile
+        {...other}
+        className={`!right-[11px] ${className}`}
+        style={{ transform: "none" }} // nadpisuje inline transform od MUI
+      />
+    );
+  };
+
+  const { isMdUp } = useBreakpoint();
+
   const [searchValue, setSearchValue] = useState("");
   const [sortValue, setSortValue] = useState(sortSelectOptions[0].value);
+
+  const handleSearchBills = (value: string) => {
+    setSearchValue(value);
+  };
+
+  const handleSortBy = (value: string) => {
+    setSortValue(value);
+  };
 
   const filteredAndSortedTransactions = useMemo(() => {
     const filteredTransactions = recurringBills.filter((item) => {
@@ -171,14 +221,15 @@ const RecurringBills = () => {
   }, [recurringBills, searchValue, sortValue]);
 
   console.log(filteredAndSortedTransactions);
+  console.log(dueSoon);
 
   return (
     <section className="grid gap-space-400">
       <div className="flex items-center justify-between">
         <h1>Recurring Bills</h1>
       </div>
-      <div className="flex flex-col gap-space-300 lg:flex-row">
-        <div className="flex flex-col gap-space-150 md:flex-row md:gap-space-300 lg:flex-col lg:min-w-[337px]">
+      <div className="flex flex-col gap-space-300 xl:flex-row">
+        <div className="flex flex-col gap-space-150 h-fit md:flex-row md:gap-space-300 xl:flex-col lg:min-w-[337px]">
           <div className="flex flex-1 items-center rounded-default gap-space-250 px-space-250 py-space-300 bg-fill-one md:flex-col md:items-start md:justify-end md:gap-space-400 lg:justify-start">
             <IconRecurringBills />
             <div className="grid gap-space-150 text-color-two">
@@ -212,8 +263,135 @@ const RecurringBills = () => {
             </ul>
           </div>
         </div>
-        <div className="flex flex-1 bg-fill-two">
-          <h1>Placeholder</h1>
+        <div className="flex flex-col flex-1 py-space-300 px-space-250 bg-fill-two rounded-default">
+          <div className="flex justify-between gap-space-300">
+            <div>
+              <TextField
+                id="outlined-basic"
+                label="Search Bills"
+                variant="outlined"
+                className="mui-search mui-label"
+                onChange={(e) => {
+                  handleSearchBills(e.target.value);
+                }}
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconSearch />
+                      </InputAdornment>
+                    ),
+                  },
+                }}
+              />
+            </div>
+            <div className="flex md:gap-space-300">
+              <div className="flex items-center gap-space-100">
+                <span className="hidden text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4 text-color-three whitespace-nowrap md:flex">
+                  Sort by
+                </span>
+                <TextField
+                  select
+                  defaultValue={sortSelectOptions[0].value}
+                  value={sortValue}
+                  onChange={(e) => {
+                    handleSortBy(e.target.value);
+                  }}
+                  className={clsx(
+                    "mui-select",
+                    isMdUp ? "w-28.5" : "mui-select-mobile"
+                  )}
+                  slotProps={{
+                    select: {
+                      IconComponent: isMdUp ? RotatingIcon : IconSort,
+                      renderValue: () => (isMdUp ? sortValue : null),
+                    },
+                  }}
+                >
+                  {sortSelectOptions.map((option) => (
+                    <MenuItem
+                      key={option.value}
+                      value={option.value}
+                      autoFocus={false}
+                      disableRipple //wyłączenie pojawiania się wypełnienia tła kolorem przy kliknięciu na przycisk
+                      className="!text-preset-4 !tracking-preset-4 !leading-preset-4 !font-preset-4 !text-color-one [&.Mui-selected]:!font-preset-4-bold !border-b-1 !border-default !px-0 !py-space-150 [&.Mui-selected]:!bg-transparent [&.Mui-selected:hover]:!bg-transparent hover:!bg-transparent hover:!font-preset-4-bold focus-within:!bg-transparent focus-within:!font-preset-4-bold"
+                    >
+                      {option.value}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </div>
+            </div>
+          </div>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow className="[&>th]:!text-preset-5 [&>th]:!tracking-preset-5 [&>th]:!leading-preset-5 [&>th]:!font-preset-5 [&>th]:!text-color-three">
+                  <TableCell className="!hidden md:!table-cell md:!p-space-200">
+                    Bill Title
+                  </TableCell>
+                  <TableCell className="!hidden md:!table-cell">
+                    Due Date
+                  </TableCell>
+                  <TableCell align="right" className="!hidden md:!table-cell">
+                    Amount
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+
+              <TableBody>
+                {filteredAndSortedTransactions.map((item, index) => {
+                  const isDueSoon = dueSoonDates.has(item.date);
+                  return (
+                    <TableRow key={index}>
+                      <TableCell className="!p-space-200 mui-cell-one">
+                        <div className="flex items-center gap-space-200">
+                          <div className="relative w-8 h-8 md:w-10 md:h-10">
+                            <Image
+                              src={item.avatar.replace("./", "/")}
+                              alt={item.name}
+                              fill
+                              className="rounded-full object-cover"
+                              sizes="(min-width: 768px) 40px, 32px"
+                            />
+                          </div>
+                          <div className="flex flex-col">
+                            <span>{item.name}</span>
+                            <span className="mui-mobile-text-positive md:!hidden">
+                              Monthly-{Number(item.date.substring(8, 10))}
+                              {formatDateOrdinalIndicators(
+                                Number(item.date.substring(8, 10))
+                              )}
+                            </span>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell className="!hidden md:!table-cell mui-amount-positive">
+                        Monthly-{Number(item.date.substring(8, 10))}
+                        {formatDateOrdinalIndicators(
+                          Number(item.date.substring(8, 10))
+                        )}
+                      </TableCell>
+                      <TableCell
+                        align="right"
+                        className={`mui-amount ${
+                          isDueSoon
+                            ? "mui-amount-due-soon"
+                            : "mui-amount-negative"
+                        }`}
+                      >
+                        <div className="flex flex-col">
+                          <span>
+                            ${priceDollarsFormatting(item.amount, true)}
+                          </span>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </div>
       </div>
     </section>
