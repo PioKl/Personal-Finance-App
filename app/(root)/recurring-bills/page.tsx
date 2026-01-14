@@ -6,6 +6,8 @@ import IconRecurringBills from "@/assets/icons/icon-recurring-bills.svg";
 import IconSearch from "@/assets/icons/icon-search.svg";
 import IconDown from "@/assets/icons/icon-caret-down.svg";
 import IconSortMobile from "@/assets/icons/icon-sort-mobile.svg";
+import IconBillDue from "@/assets/icons/icon-bill-due.svg";
+import IconBillPaid from "@/assets/icons/icon-bill-paid.svg";
 import data from "@/data/data.json";
 import { balance, transactions, budgets, pots } from "@/data/data.json";
 import {
@@ -59,6 +61,10 @@ const RecurringBills = () => {
                 6
     */
   );
+
+  // Daty paidBills, potrzebne przy has, bo Set działa tylko przy has
+  const paidBillsDates = new Set(paidBills.map((item) => item.date));
+
   const totalUpcoming = data.transactions.filter(
     (item) =>
       item.recurring === true &&
@@ -73,7 +79,7 @@ const RecurringBills = () => {
       Number(item.date.substring(8, 10)) <= Number(latestTransaction) + 5
   );
 
-  // potrzebne przy has, bo Set działa tylko przy has
+  // Daty dueSoon, potrzebne przy has, bo Set działa tylko przy has
   const dueSoonDates = new Set(dueSoon.map((item) => item.date));
 
   const paidBillsSum = paidBills
@@ -220,9 +226,6 @@ const RecurringBills = () => {
     return sorted;
   }, [recurringBills, searchValue, sortValue]);
 
-  console.log(filteredAndSortedTransactions);
-  console.log(dueSoon);
-
   return (
     <section className="grid gap-space-400">
       <div className="flex items-center justify-between">
@@ -342,6 +345,7 @@ const RecurringBills = () => {
               <TableBody>
                 {filteredAndSortedTransactions.map((item, index) => {
                   const isDueSoon = dueSoonDates.has(item.date);
+                  const isPaidBill = paidBillsDates.has(item.date);
                   return (
                     <TableRow key={index}>
                       <TableCell className="!p-space-200 mui-cell-one">
@@ -357,20 +361,46 @@ const RecurringBills = () => {
                           </div>
                           <div className="flex flex-col">
                             <span>{item.name}</span>
-                            <span className="mui-mobile-text-positive md:!hidden">
-                              Monthly-{Number(item.date.substring(8, 10))}
-                              {formatDateOrdinalIndicators(
-                                Number(item.date.substring(8, 10))
+                            <div className="flex items-end gap-space-100 md:!hidden">
+                              <span className="mui-mobile-text-positive">
+                                Monthly-{Number(item.date.substring(8, 10))}
+                                {formatDateOrdinalIndicators(
+                                  Number(item.date.substring(8, 10))
+                                )}
+                              </span>
+                              {isDueSoon && (
+                                <span>
+                                  <IconBillDue />
+                                </span>
                               )}
-                            </span>
+                              {isPaidBill && (
+                                <span>
+                                  <IconBillPaid />
+                                </span>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </TableCell>
                       <TableCell className="!hidden md:!table-cell mui-amount-positive">
-                        Monthly-{Number(item.date.substring(8, 10))}
-                        {formatDateOrdinalIndicators(
-                          Number(item.date.substring(8, 10))
-                        )}
+                        <div className="flex items-end gap-space-100">
+                          <span>
+                            Monthly-{Number(item.date.substring(8, 10))}
+                            {formatDateOrdinalIndicators(
+                              Number(item.date.substring(8, 10))
+                            )}
+                          </span>
+                          {isDueSoon && (
+                            <span>
+                              <IconBillDue />
+                            </span>
+                          )}
+                          {isPaidBill && (
+                            <span>
+                              <IconBillPaid />
+                            </span>
+                          )}
+                        </div>
                       </TableCell>
                       <TableCell
                         align="right"
