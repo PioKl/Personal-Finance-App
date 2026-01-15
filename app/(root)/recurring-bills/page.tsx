@@ -216,9 +216,9 @@ const RecurringBills = () => {
         case "Z to A":
           return b.name.localeCompare(a.name);
         case "Highest":
-          return b.amount - a.amount;
-        case "Lowest":
           return a.amount - b.amount;
+        case "Lowest":
+          return b.amount - a.amount;
         default:
           return 0;
       }
