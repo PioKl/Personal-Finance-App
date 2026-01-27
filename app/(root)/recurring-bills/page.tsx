@@ -9,7 +9,6 @@ import IconSortMobile from "@/assets/icons/icon-sort-mobile.svg";
 import IconBillDue from "@/assets/icons/icon-bill-due.svg";
 import IconBillPaid from "@/assets/icons/icon-bill-paid.svg";
 import data from "@/data/data.json";
-import { balance, transactions, budgets, pots } from "@/data/data.json";
 import {
   priceDollarsFormatting,
   formatDateOrdinalIndicators,
@@ -36,12 +35,12 @@ interface IconSortProps {
 }
 
 const RecurringBills = () => {
-  //Do poprawki
-  //paid bills to po prostu zaplacone te z sierpnia juz przed data 19
+  const { transactions } = data;
+
   //Due soon 5 dni do przodu od ostatniej transakcji
   //total upcoming wszystkie w przyszlosci, czyli wszystkie nadchodzące czyli na podstawie tych powtarzajacych sie z lipca mozna przyjac, ze wszystkie po dacie 19 z lipca beda tez to zaplaty w sierpniu dlatego total upcoming to item.date.substring(8, 10) > "19"
 
-  const latestTransaction = data.transactions[0].date.substring(8, 10); //wyciągnięcie samego dnia
+  const latestTransaction = transactions[0].date.substring(8, 10); //wyciągnięcie samego dnia
   /* 
       date.substring(8, 10)
       0 1 2 3 4 5 6 7 8 9
@@ -50,8 +49,8 @@ const RecurringBills = () => {
                       8 9
       */
 
-  const paidBills = data.transactions.filter(
-    (item) => item.recurring === true && item.date.charAt(6) === "8"
+  const paidBills = transactions.filter(
+    (item) => item.recurring === true && item.date.charAt(6) === "8",
     /*Dany miesiąc, tu chodzi o sierpień
     charAt(6)
     date = "2025-08-23";
@@ -65,18 +64,18 @@ const RecurringBills = () => {
   // Daty paidBills, potrzebne przy has, bo Set działa tylko przy has
   const paidBillsDates = new Set(paidBills.map((item) => item.date));
 
-  const totalUpcoming = data.transactions.filter(
+  const totalUpcoming = transactions.filter(
     (item) =>
       item.recurring === true &&
-      Number(item.date.substring(8, 10)) > Number(latestTransaction)
+      Number(item.date.substring(8, 10)) > Number(latestTransaction),
   );
 
   //zakres, ze od ostatniej transkacji 5 dni max do przodu
-  const dueSoon = data.transactions.filter(
+  const dueSoon = transactions.filter(
     (item) =>
       item.recurring === true &&
       Number(item.date.substring(8, 10)) > Number(latestTransaction) &&
-      Number(item.date.substring(8, 10)) <= Number(latestTransaction) + 5
+      Number(item.date.substring(8, 10)) <= Number(latestTransaction) + 5,
   );
 
   // Daty dueSoon, potrzebne przy has, bo Set działa tylko przy has
@@ -95,10 +94,10 @@ const RecurringBills = () => {
     .reduce((a, b) => a + b, 0);
 
   //to jest połączenie paidBills i totalUpcoming
-  const recurringBills = data.transactions.filter(
+  const recurringBills = transactions.filter(
     (item) =>
       item.recurring === true &&
-      (item.date.charAt(6) === "8" || item.date.substring(8, 10) > "19")
+      (item.date.charAt(6) === "8" || item.date.substring(8, 10) > "19"),
     /* 
      - Show the recurring transactions that have already been paid for August 2024.
      - Show the payments due to be paid soon based on their monthly payment date. Calculate this from recurring transactions yet to be paid for August 2024, but due within five days of the latest overall transaction in the app (Emma Richardson - 19 August 2024).
@@ -127,14 +126,14 @@ const RecurringBills = () => {
       name: "Paid Bills",
       value: `${paidBills.length} ($${priceDollarsFormatting(
         paidBillsSum,
-        true
+        true,
       )})`,
     },
     {
       name: "Total Upcoming",
       value: `${totalUpcoming.length} ($${priceDollarsFormatting(
         totalUpcomingSum,
-        true
+        true,
       )})`,
     },
     {
@@ -302,7 +301,7 @@ const RecurringBills = () => {
                   }}
                   className={clsx(
                     "mui-select",
-                    isMdUp ? "w-28.5" : "mui-select-mobile"
+                    isMdUp ? "w-28.5" : "mui-select-mobile",
                   )}
                   slotProps={{
                     select: {
@@ -365,7 +364,7 @@ const RecurringBills = () => {
                               <span className="mui-mobile-text-positive">
                                 Monthly-{Number(item.date.substring(8, 10))}
                                 {formatDateOrdinalIndicators(
-                                  Number(item.date.substring(8, 10))
+                                  Number(item.date.substring(8, 10)),
                                 )}
                               </span>
                               {isDueSoon && (
@@ -387,7 +386,7 @@ const RecurringBills = () => {
                           <span>
                             Monthly-{Number(item.date.substring(8, 10))}
                             {formatDateOrdinalIndicators(
-                              Number(item.date.substring(8, 10))
+                              Number(item.date.substring(8, 10)),
                             )}
                           </span>
                           {isDueSoon && (
