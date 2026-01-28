@@ -91,3 +91,15 @@ export type AddWithdrawMoneyModal = {
   open: boolean;
   onClose: () => void;
 };
+
+export type RotatingIcon = {
+  className?: string;
+};
+
+export type IconSort = {
+  className?: string;
+};
+
+export type IconFilter = {
+  className?: string;
+};
