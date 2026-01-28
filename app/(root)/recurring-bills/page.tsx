@@ -2,10 +2,10 @@
 import { useState, useMemo } from "react";
 import Image from "next/image";
 import clsx from "clsx";
+import { RotatingIcon } from "@/components/ui/icons/RotatingIcon";
+import { IconSort } from "@/components/ui/icons/IconSort";
 import IconRecurringBills from "@/assets/icons/icon-recurring-bills.svg";
 import IconSearch from "@/assets/icons/icon-search.svg";
-import IconDown from "@/assets/icons/icon-caret-down.svg";
-import IconSortMobile from "@/assets/icons/icon-sort-mobile.svg";
 import IconBillDue from "@/assets/icons/icon-bill-due.svg";
 import IconBillPaid from "@/assets/icons/icon-bill-paid.svg";
 import data from "@/data/data.json";
@@ -25,14 +25,6 @@ import {
   MenuItem,
 } from "@mui/material";
 import { useBreakpoint } from "@/utils/breakpoints";
-
-interface RotatingIconProps {
-  className?: string;
-}
-
-interface IconSortProps {
-  className?: string;
-}
 
 const RecurringBills = () => {
   const { transactions } = data;
@@ -163,25 +155,6 @@ const RecurringBills = () => {
       value: "Lowest",
     },
   ];
-
-  const RotatingIcon = ({ className, ...other }: RotatingIconProps) => {
-    return (
-      <IconDown
-        {...other} // obsługuje kliknięcie selecta i dostępność
-        className={`!top-[45%] !right-[16px] transition-transform duration-200 ${className}`}
-      />
-    );
-  };
-
-  const IconSort = ({ className, ...other }: IconSortProps) => {
-    return (
-      <IconSortMobile
-        {...other}
-        className={`!right-[11px] ${className}`}
-        style={{ transform: "none" }} // nadpisuje inline transform od MUI
-      />
-    );
-  };
 
   const { isMdUp } = useBreakpoint();
 
