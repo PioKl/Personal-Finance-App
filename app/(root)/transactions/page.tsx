@@ -17,55 +17,14 @@ import {
 import { formatDate, formatAmount } from "@/utils/formattingFunctions";
 import Image from "next/image";
 import IconSearch from "@/assets/icons/icon-search.svg";
-import IconDown from "@/assets/icons/icon-caret-down.svg";
-import IconFilterMobile from "@/assets/icons/icon-filter-mobile.svg";
-import IconSortMobile from "@/assets/icons/icon-sort-mobile.svg";
 import CustomPagination from "@/components/ui/CustomPagination";
 import { useBreakpoint } from "@/utils/breakpoints";
-
-interface RotatingIconProps {
-  className?: string;
-}
-
-interface IconFilterProps {
-  className?: string;
-}
-
-interface IconSortProps {
-  className?: string;
-}
+import { RotatingIcon } from "@/components/ui/icons/RotatingIcon";
+import { IconFilter } from "@/components/ui/icons/IconFilter";
+import { IconSort } from "@/components/ui/icons/IconSort";
 
 const Transactions = () => {
   const { transactions } = data as { transactions: Transactions[] };
-
-  const RotatingIcon = ({ className, ...other }: RotatingIconProps) => {
-    return (
-      <IconDown
-        {...other} // obsługuje kliknięcie selecta i dostępność
-        className={`!top-[45%] !right-[16px] transition-transform duration-200 ${className}`}
-      />
-    );
-  };
-
-  const IconFilter = ({ className, ...other }: IconFilterProps) => {
-    return (
-      <IconFilterMobile
-        {...other}
-        className={`!right-[11px] ${className}`}
-        style={{ transform: "none" }} // nadpisuje inline transform od MUI
-      />
-    );
-  };
-
-  const IconSort = ({ className, ...other }: IconSortProps) => {
-    return (
-      <IconSortMobile
-        {...other}
-        className={`!right-[11px] ${className}`}
-        style={{ transform: "none" }} // nadpisuje inline transform od MUI
-      />
-    );
-  };
 
   const sortSelectOptions = [
     {
@@ -102,7 +61,7 @@ const Transactions = () => {
       "Education",
       "Groceries",
     ],
-    []
+    [],
   );
 
   const { isMdUp } = useBreakpoint();
@@ -166,7 +125,7 @@ const Transactions = () => {
   const transactionsPerPage = 10;
   const handleChangePage = (
     event: React.ChangeEvent<unknown>,
-    value: number
+    value: number,
   ) => {
     setPage(value);
   };
@@ -223,7 +182,7 @@ const Transactions = () => {
                 }}
                 className={clsx(
                   "mui-select",
-                  isMdUp ? "w-28.5" : "mui-select-mobile"
+                  isMdUp ? "w-28.5" : "mui-select-mobile",
                 )}
                 slotProps={{
                   select: {
@@ -258,7 +217,7 @@ const Transactions = () => {
                 }}
                 className={clsx(
                   "mui-select",
-                  isMdUp ? "w-44.5" : "mui-select-mobile"
+                  isMdUp ? "w-44.5" : "mui-select-mobile",
                 )}
                 slotProps={{
                   select: {
@@ -351,7 +310,7 @@ const Transactions = () => {
         </TableContainer>
         <CustomPagination
           count={Math.ceil(
-            filteredAndSortedTranscations.length / transactionsPerPage
+            filteredAndSortedTranscations.length / transactionsPerPage,
           )}
           page={page}
           onChange={handleChangePage}
