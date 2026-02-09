@@ -1,11 +1,8 @@
 import { Transactions } from "@/types";
 
-export const paidBillsByMonth = (
-  transactions: Transactions[],
-  calculateSum: boolean,
-) => {
-  const filtered = transactions.filter(
-    (item) => item.recurring === true && item.date.charAt(6) === "8",
+export const paidBills = (transactions: Transactions[]) => {
+  const items = transactions.filter(
+    (item) => item.recurring === true && item.date.charAt(6) === "8", //pofiltorwanie
   );
   /*Dany miesiąc, tu chodzi o sierpień
     charAt(6)
@@ -15,17 +12,15 @@ export const paidBillsByMonth = (
                 ↑
                 6
     */
-  if (calculateSum === true) {
-    return filtered.map((item) => item.amount).reduce((a, b) => a + b, 0);
-  } else {
-    return filtered;
-  }
+  const totalSum = items.reduce((sum, item) => sum + item.amount, 0);
+
+  return {
+    items,
+    totalSum,
+  };
 };
 
-export const totalUpcoming = (
-  transactions: Transactions[],
-  calculateSum: boolean,
-) => {
+export const totalUpcoming = (transactions: Transactions[]) => {
   const latestTransaction = transactions[0].date.substring(8, 10); //wyciągnięcie samego dnia
   /* 
       date.substring(8, 10)
@@ -34,22 +29,21 @@ export const totalUpcoming = (
                       ↑ ↑
                       8 9
       */
-  const filtered = transactions.filter(
+  const items = transactions.filter(
     (item) =>
       item.recurring === true &&
       Number(item.date.substring(8, 10)) > Number(latestTransaction),
-  );
-  if (calculateSum === true) {
-    return filtered.map((item) => item.amount).reduce((a, b) => a + b, 0);
-  } else {
-    return filtered;
-  }
+  ); //pofiltorwanie
+
+  const totalSum = items.reduce((sum, item) => sum + item.amount, 0);
+
+  return {
+    items,
+    totalSum,
+  };
 };
 
-export const dueSoon = (
-  transactions: Transactions[],
-  calculateSum: boolean,
-) => {
+export const dueSoon = (transactions: Transactions[]) => {
   const latestTransaction = transactions[0].date.substring(8, 10); //wyciągnięcie samego dnia
   /* 
       date.substring(8, 10)
@@ -58,15 +52,17 @@ export const dueSoon = (
                       ↑ ↑
                       8 9
       */
-  const filtered = transactions.filter(
+  const items = transactions.filter(
     (item) =>
       item.recurring === true &&
       Number(item.date.substring(8, 10)) > Number(latestTransaction) &&
       Number(item.date.substring(8, 10)) <= Number(latestTransaction) + 5,
-  );
-  if (calculateSum === true) {
-    return filtered.map((item) => item.amount).reduce((a, b) => a + b, 0);
-  } else {
-    return filtered;
-  }
+  ); //pofiltorwanie
+
+  const totalSum = items.reduce((sum, item) => sum + item.amount, 0);
+
+  return {
+    items,
+    totalSum,
+  };
 };
