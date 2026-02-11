@@ -8,6 +8,11 @@ import RecurringBillItem from "@/components/overview/RecurringBillItem";
 //import TransactionsList from "@/components/overview/TransactionsList";
 import TransactionsList from "@/components/shared/TransactionsList";
 import PotsList from "@/components/overview/PotsList";
+import {
+  paidBills,
+  totalUpcoming,
+  dueSoon,
+} from "@/utils/recurringBillsFunctions";
 
 export const metadata = {
   title: "Overview",
@@ -102,17 +107,17 @@ export default function Home() {
               <ul className="grid gap-space-150">
                 <RecurringBillItem
                   label="Paid Bills"
-                  value={190}
+                  value={paidBills(transactions).totalSum * -1}
                   borderColorClass="border-l-pots-one"
                 />
                 <RecurringBillItem
                   label="Total Upcoming"
-                  value={194.98}
+                  value={totalUpcoming(transactions).totalSum * -1}
                   borderColorClass="border-l-pots-four"
                 />
                 <RecurringBillItem
                   label="Due Soon"
-                  value={59.98}
+                  value={dueSoon(transactions).totalSum * -1}
                   borderColorClass="border-l-pots-two"
                 />
               </ul>
