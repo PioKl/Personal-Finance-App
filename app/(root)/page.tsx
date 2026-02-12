@@ -5,7 +5,6 @@ import IconPot from "@/assets/icons/icon-pot.svg";
 import SectionCard from "@/components/shared/SectionCard";
 import BudgetChart from "@/components/shared/BudgetChart";
 import RecurringBillItem from "@/components/overview/RecurringBillItem";
-//import TransactionsList from "@/components/overview/TransactionsList";
 import TransactionsList from "@/components/shared/TransactionsList";
 import PotsList from "@/components/overview/PotsList";
 import {
@@ -68,7 +67,7 @@ export default function Home() {
                       Total Saved
                     </span>
                     <span className="text-preset-1 tracking-preset-1 leading-preset-1 font-preset-1 text-color-one">
-                      $850
+                      ${pots.reduce((sum, item) => sum + item.total, 0)}
                     </span>
                   </div>
                 </div>
