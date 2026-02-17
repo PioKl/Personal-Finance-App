@@ -1,57 +1,44 @@
 "use client";
 import { priceDollarsFormatting } from "@/utils/formattingFunctions";
-import { Budgets } from "@/types";
 import { BudgetWithTransactionsAmounts } from "@/interfaces";
 import { Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
+import type { ChartOptions } from "chart.js";
 
-type BudgetChartProps =
-  | {
-      variant: "default";
-      budgets: Budgets[];
-      budgetsWithTransactions?: never;
-    }
-  | {
-      variant: "budgets";
-      budgetsWithTransactions: BudgetWithTransactionsAmounts[]; //transakcje wbudowane w "budgets", a dokładnie same amount w tym przypadku
-      budgets?: never;
-    };
+type BudgetChartProps = {
+  variant: "default" | "budgets";
+  budgetsWithTransactions: BudgetWithTransactionsAmounts[];
+};
 
 export default function BudgetChart(props: BudgetChartProps) {
   const { variant } = props;
-
-  let budgetsLabels: string[];
-  let budgetsMaximum: number[];
-  let budgetsTheme: string[];
-  let budgetsItems: (Budgets | BudgetWithTransactionsAmounts)[] = [];
-  let budgetsAmount: number[] = [];
-
-  if (variant === "budgets") {
-    const { budgetsWithTransactions } = props;
-
-    budgetsLabels = budgetsWithTransactions.map((b) => b.category);
-    budgetsMaximum = budgetsWithTransactions.map((b) => b.maximum);
-    budgetsTheme = budgetsWithTransactions.map((b) => b.theme);
-    budgetsItems = budgetsWithTransactions;
-    budgetsAmount = budgetsWithTransactions.map((budget) =>
+  const { budgetsWithTransactions } = props;
+  const budgetsLabels: string[] = budgetsWithTransactions.map(
+    (b) => b.category,
+  );
+  const budgetsMaximum: number[] = budgetsWithTransactions.map(
+    (b) => b.maximum,
+  );
+  const budgetsTheme: string[] = budgetsWithTransactions.map((b) => b.theme);
+  const budgetsItems: BudgetWithTransactionsAmounts[] = budgetsWithTransactions;
+  const budgetsAmount: number[] = budgetsWithTransactions.map(
+    (budget) =>
       budget.transactions.reduce(
         (sum, transaction) => sum + transaction.amount,
-        0
-      )
-    );
-  } else {
-    const { budgets } = props;
-    budgetsLabels = budgets.map((b) => b.category);
-    budgetsMaximum = budgets.map((b) => b.maximum);
-    budgetsTheme = budgets.map((b) => b.theme);
-    budgetsItems = budgets;
-  }
+        0,
+      ) * -1,
+  );
+
+  const budgetsAmountTotal: number =
+    budgetsWithTransactions
+      .flatMap((b) => b.transactions)
+      .reduce((sum, transaction) => sum + transaction.amount, 0) * -1;
 
   const chartData = {
     labels: budgetsLabels,
     datasets: [
       {
-        data: budgetsMaximum,
+        data: budgetsAmount,
         backgroundColor: budgetsTheme,
         borderWidth: 0,
       },
@@ -60,12 +47,19 @@ export default function BudgetChart(props: BudgetChartProps) {
 
   const options = {
     plugins: {
+      tooltip: {
+        enabled: true,
+        backgroundColor: "rgba(0,0,0,0.8)",
+        yAlign: "top",
+        xAlign: "center",
+        position: "nearest",
+      },
       legend: {
         display: false,
       },
     },
     cutout: "66%",
-  };
+  } satisfies ChartOptions<"doughnut">;
 
   return (
     <div
@@ -86,7 +80,7 @@ export default function BudgetChart(props: BudgetChartProps) {
           </div>
           <div className="absolute flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[187.5px] h-[187.5px] bg-white/25 rounded-full">
             <span className="text-preset-1 tracking-preset-1 leading-preset-1 font-preset-1 text-color-one">
-              $338
+              ${budgetsAmountTotal}
             </span>
             <span className="text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5 text-color-three">
               of ${budgetsMaximum.reduce((a, b) => a + b, 0)} limit
@@ -134,9 +128,7 @@ export default function BudgetChart(props: BudgetChartProps) {
                   <span
                     className={`text-preset-4 tracking-preset-4 leading-preset-4 font-preset-4-bold text-color-one`}
                   >
-                    {variant === "budgets"
-                      ? `$${priceDollarsFormatting(budgetsAmount[index], true)}`
-                      : `$${priceDollarsFormatting(item.maximum)}`}
+                    ${priceDollarsFormatting(budgetsAmount[index], true)}
                   </span>
                   {variant === "budgets" && (
                     <div className="flex gap-space-50 text-preset-5 tracking-preset-5 leading-preset-5 font-preset-5 text-color-three">
