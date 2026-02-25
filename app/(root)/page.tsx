@@ -12,6 +12,7 @@ import {
   totalUpcoming,
   dueSoon,
 } from "@/utils/recurringBillsFunctions";
+import { budgetsWithTransactionsAmounts } from "@/utils/budgetsFunctions";
 
 export const metadata = {
   title: "Overview",
@@ -25,6 +26,7 @@ export default function Home() {
   const { budgets } = data as unknown as { budgets: Budgets[] };
   const potsSlice = pots.slice(0, 4);
   const transactionsSlice = transactions.slice(0, 5);
+  const budgetSummaries = budgetsWithTransactionsAmounts(budgets, transactions);
 
   return (
     <>
@@ -93,7 +95,10 @@ export default function Home() {
               linkLabel="See Details"
               variant="default"
             >
-              <BudgetChart budgets={budgets} variant="default" />
+              <BudgetChart
+                budgetsWithTransactions={budgetSummaries}
+                variant="default"
+              />
             </SectionCard>
 
             <SectionCard
