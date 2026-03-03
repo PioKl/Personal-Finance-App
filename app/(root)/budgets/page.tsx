@@ -4,13 +4,11 @@ import { Budgets as BudgetsType } from "@/types";
 import BudgetChart from "@/components/shared/BudgetChart";
 import SectionCard from "@/components/shared/SectionCard";
 import type { Transactions } from "@/types";
-import {
-  BudgetWithTransactions,
-  BudgetWithTransactionsAmounts,
-} from "@/interfaces";
+import { BudgetWithTransactions } from "@/interfaces";
 import CategoryBudgets from "@/components/budgets/CategoryBudgets";
 import Button from "@/components/ui/Button";
 import AddEditModal from "@/components/modals/AddEditModal";
+import { budgetsWithTransactionsAmounts } from "@/utils/budgetsFunctions";
 import { useState } from "react";
 const Budgets = () => {
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -34,26 +32,12 @@ const Budgets = () => {
       maximum: budget.maximum,
       theme: budget.theme,
       transactions: transactions.filter(
-        (transaction) => transaction.category === budget.category
+        (transaction) => transaction.category === budget.category,
       ),
-    })
+    }),
   );
 
-  //Kategoria jest identyczna w budżecie i transakcji i wszystkie transakcje o takiej samej kategorii są teraz w jednej tablicy (w tym przypadku z transakcji jest tylko zabierane amount, reszta będzie niepotrzebna)
-  const budgetsWithTransactionsAmounts: BudgetWithTransactionsAmounts[] =
-    budgets.map((budget) => ({
-      /*W tym momencie każdy element MUSI mieć _type, ponieważ interfejs
-       BudgetsWithTransactionsAmounts wymaga go (to nie jest opcjonalne pole).
-       Dzięki temu TypeScript dokładnie wie, z jakim typem ma do czynienia
-       w momencie przekazywania danych np. do komponentu BudgetChart. */
-      _type: "BudgetsWithTransactionsAmounts", //potrzebne, bo inaczej TS zgłosi brak wymaganego pola
-      category: budget.category,
-      maximum: budget.maximum,
-      theme: budget.theme,
-      transactions: transactions
-        .filter((transaction) => transaction.category === budget.category)
-        .map(({ amount }) => ({ amount })),
-    }));
+  const budgetSummaries = budgetsWithTransactionsAmounts(budgets, transactions);
 
   return (
     <section className="grid gap-space-400">
@@ -86,7 +70,7 @@ const Budgets = () => {
           variant="budgets"
         >
           <BudgetChart
-            budgetsWithTransactions={budgetsWithTransactionsAmounts}
+            budgetsWithTransactions={budgetSummaries}
             variant="budgets"
           />
         </SectionCard>
