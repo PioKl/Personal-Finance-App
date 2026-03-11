@@ -188,6 +188,13 @@ const Transactions = () => {
                   select: {
                     IconComponent: isMdUp ? RotatingIcon : IconSort,
                     renderValue: () => (isMdUp ? sortValue : null),
+                    MenuProps: {
+                      PaperProps: {
+                        sx: {
+                          mt: 2,
+                        },
+                      },
+                    },
                   },
                 }}
               >
@@ -223,6 +230,17 @@ const Transactions = () => {
                   select: {
                     IconComponent: isMdUp ? RotatingIcon : IconFilter,
                     renderValue: () => (isMdUp ? categoryValue : null),
+                    MenuProps: {
+                      PaperProps: {
+                        sx: {
+                          mt: 2,
+                          transform: "translateX(-20px) !important",
+                          "@media (min-width:768px)": {
+                            transform: "none !important",
+                          },
+                        },
+                      },
+                    },
                   },
                 }}
               >
