@@ -3,8 +3,6 @@ import type { RuleSetRule } from "webpack";
 
 const nextConfig: NextConfig = {
   output: "export",
-  basePath: "/Personal-Finance-App",
-  assetPrefix: "/Personal-Finance-App/",
   /* config options here */
   webpack(config) {
     // Grab the existing rule that handles SVG imports
