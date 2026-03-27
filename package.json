@@ -1,11 +1,8 @@
 {
-  "homepage": "https://piokl.github.io/Personal-Finance-App/",
   "name": "personal-finance-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "next build && gh-pages -d out",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -17,7 +14,6 @@
     "@mui/material": "^7.3.2",
     "chart.js": "^4.5.0",
     "clsx": "^2.1.1",
-    "gh-pages": "^6.3.0",
     "next": "15.4.6",
     "react": "19.1.0",
     "react-chartjs-2": "^5.3.0",
