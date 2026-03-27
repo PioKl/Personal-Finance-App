@@ -2,12 +2,14 @@ import type { NextConfig } from "next";
 import type { RuleSetRule } from "webpack";
 
 const nextConfig: NextConfig = {
+  basePath: "/Personal-Finance-App",
+  assetPrefix: "/Personal-Finance-App/",
   /* config options here */
   webpack(config) {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find(
       (rule: RuleSetRule) =>
-        rule.test instanceof RegExp && rule.test.test(".svg")
+        rule.test instanceof RegExp && rule.test.test(".svg"),
     );
     if (fileLoaderRule) {
       config.module.rules.push(
@@ -23,7 +25,7 @@ const nextConfig: NextConfig = {
           issuer: fileLoaderRule.issuer,
           resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] }, // exclude if *.svg?url
           use: ["@svgr/webpack"],
-        }
+        },
       );
 
       // Modify the file loader rule to ignore *.svg, since we have it handled now.
